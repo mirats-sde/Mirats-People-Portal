@@ -1,0 +1,266 @@
+header {
+  /* border: 1px solid red; */
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.right {
+  margin-right: 1em;
+  /* display: flex; */
+}
+
+.sign_in {
+  display: flex;
+  align-items: center;
+}
+
+.right .sign_in p {
+  color: var(--primary_text_color);
+  font-size: 0.9em;
+}
+
+.sign_in_details img {
+  object-fit: cover;
+}
+
+/* profile intro */
+.profileIntro {
+  /* border: 1px solid red; */
+  /* text-align: center; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1em 0;
+}
+
+.profile_desc {
+  margin-right: 1.5em;
+}
+
+.profile_desc h1 {
+  font-size: 3em;
+  font-weight: 300;
+}
+
+.profile_desc .quote {
+  text-align: center;
+  margin-top: 0.8em;
+  font-size: 22px;
+}
+
+.profile_desc span {
+  color: #bf92b8;
+}
+
+.profileImg img {
+  /* border: 1px solid red; */
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  filter: drop-shadow(0px 11px 14px rgba(0, 0, 0, 0.25));
+}
+
+.navigation {
+  display: flex;
+  justify-content: center;
+}
+
+.navigation nav ul {
+  display: flex;
+  /* border: 1px solid blue; */
+}
+
+.navigation nav ul li {
+  /* border: 1px solid red; */
+  padding: 1em 3em;
+  margin-right: 2em;
+  border: 0.1px solid #ffffff;
+  box-shadow: -1px 8px 12px -3px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+}
+
+/* profile details */
+.profile_details {
+  /* border: 1px solid blue; */
+  display: flex;
+  justify-content: space-between;
+  /* height: 100vh; */
+  margin: 2em 5em;
+}
+
+/* left */
+.profile_left {
+  /* border: 1px solid red; */
+  border: 1px solid #e0e0e0;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  width: 28vw;
+  padding: 2em;
+  height: 38vw;
+  border-radius: 32px;
+}
+
+.profile_left_details img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  filter: drop-shadow(0px 11px 14px rgba(0, 0, 0, 0.25));
+  margin-bottom: 1em;
+}
+
+.profile_left_details h1 {
+  font-weight: 300;
+  font-size: 1.8em;
+}
+
+.profile_left_details p {
+  color: #868686;
+  margin-bottom: 1em;
+}
+
+.left_pages {
+  padding-bottom: 2em;
+}
+
+.pages h4 {
+  margin-bottom: 0.3em;
+  color: #5f5f5f;
+  font-weight: 300;
+  line-height: 29px;
+}
+
+/* right */
+.profile_right {
+  /* border: 1px solid pink; */
+  width: 55vw;
+  border-radius: 32px;
+}
+
+.personal_info_card {
+  display: flex;
+  background: linear-gradient(
+    264.82deg,
+    rgba(189, 192, 255, 0.56) -0.41%,
+    rgba(255, 191, 177, 0.4) 63.33%
+  );
+  border-radius: 30px;
+  padding-top: 1.5em;
+  /* width: 678px; */
+  /* padding: 2em; */
+}
+
+.personal_info_card img {
+  /* border: 1px solid gray; */
+  margin-right: 1em;
+}
+
+.card_details {
+  /* padding: 2em 2em; */
+}
+
+.card_details h1 {
+  font-size: 30px;
+  line-height: 44px;
+  font-weight: 300;
+  margin-bottom: 0.3em;
+}
+
+.card_details p {
+  font-size: 20px;
+  line-height: 29px;
+  color: #5f5f5f;
+  width: 28vw;
+  font-weight: 300;
+}
+
+/* profile card details */
+.profile_details_cards {
+  /* border: 1px solid red; */
+  margin: 2em 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2em;
+}
+
+.card_body {
+  padding: 1.7em;
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 32px;
+  /* width: 20vw; */
+  /* width: 26vw;
+  height: 10vw; */
+  width: 313px;
+  height: 150px;
+}
+
+.card_body h1 {
+  font-size: 30px;
+  font-weight: 300;
+  margin-bottom: 0.2em;
+}
+
+.card_body p {
+  color: #868686;
+  font-size: 20px;
+}
+
+/* identity details */
+.details {
+  margin: 1em 0;
+}
+
+.details .btn_detail {
+  border: 1px solid #000000;
+  border-radius: 32px;
+  padding: 1em 2em;
+  background-color: white;
+}
+
+.details_card {
+  /* border: 1px solid red; */
+  margin-top: 1.5em;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.details_card_body {
+  border: 1px solid pink;
+  padding: 2em;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 32px;
+  /* height: 15vw; */
+  width: 25vw;
+  margin-bottom: 2em;
+}
+
+.details_card_body h1 {  
+  font-size: 24px;
+  font-weight: 300;
+  margin-bottom: 0.3em;
+}
+
+.details_card_body p {
+  color: #868686;
+  margin: 0.3em 0;
+  font-size: 20px;
+}
+
+.address {
+  height: 12vw;
+  /* border: 1px solid red; */
+}
+
+.details_card_body button {
+  padding: 0.4em 1.5em;
+  border: none;
+  background-color: var(--btn_color);
+  color: white;
+  border-radius: 32px;
+}
