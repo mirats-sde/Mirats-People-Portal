@@ -351,11 +351,7 @@ const IdentityDetails = () => {
 };
 
 const WorkDetails = () => {
-    return (
-        <div className={styles.work_details}>
-            
-        </div>
-    )
-}
+  return <div className={styles.work_details}></div>;
+};
 
 export default MainPage;
