@@ -7,6 +7,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainPage />} />
+          <Route path="/:detailsTypes" element={<MainPage />} />
         </Routes>
       </BrowserRouter>
     </div>
