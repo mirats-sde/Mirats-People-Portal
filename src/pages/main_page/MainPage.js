@@ -1,26 +1,11 @@
-// material ui
-import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import PersonAdd from "@mui/icons-material/PersonAdd";
-import Settings from "@mui/icons-material/Settings";
-import Logout from "@mui/icons-material/Logout";
-
 import cx from "classnames";
 import { Link } from "react-router-dom";
 
 // hooks
-import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 // in project imports
 import styles from "./MainPage.module.css";
-import miratsLogo from "../../assets/miratsLogo.png";
 import portalprofile from "../../assets/portalprofile.jpeg";
 // import profileImg from "../../assets/profileImg.png";
 import emp from "../../assets/emp.png";
@@ -28,16 +13,18 @@ import personalInfoImgmodified from "../../assets/personalInfoImgmodified.png";
 import financial from "../../assets/financial.png";
 import identitydetails from "../../assets/identitydetails.png";
 import workdetails from "../../assets/workdetails.png";
-import workpolicy from "../../assets/workpolicy.png";
+import workplace from "../../assets/workplace.png";
 import signin from "../../assets/signin.png";
 import documents from "../../assets/documents.png";
 import CardInfo from "../../components/cardInfo/CardInfo";
 import Footer from "../../components/footer/Footer";
 import UserPolicyCard from "../../components/userPolicyCard/UserPolicyCard";
 import ProfileIntro from "../../components/profile_Intro/ProfileIntro";
+import Header from "../../components/header/Header";
 
 const profiledetailsintro = [
   {
+    time: "Morning",
     profileName: "Rohan",
     profiledesc: "Follow Your Passion",
     profileimg: portalprofile,
@@ -46,6 +33,7 @@ const profiledetailsintro = [
 
 const personalinfocarddetails = [
   {
+    gradientclass: styles.personal_gradient,
     cardimg: personalInfoImgmodified,
     cardheading: "Personal Information",
     carddesc:
@@ -55,6 +43,7 @@ const personalinfocarddetails = [
 
 const financialcarddetails = [
   {
+    gradientclass: styles.financial_gradient,
     cardimg: financial,
     cardheading: "Financial Details",
     carddesc:
@@ -64,6 +53,7 @@ const financialcarddetails = [
 
 const identitycarddetails = [
   {
+    gradientclass: styles.identity_gradient,
     cardimg: identitydetails,
     cardheading: "Identity Details",
     carddesc:
@@ -73,6 +63,7 @@ const identitycarddetails = [
 
 const workcarddetails = [
   {
+    gradientclass: styles.work_gradient,
     cardimg: workdetails,
     cardheading: "Work Details",
     carddesc:
@@ -82,6 +73,7 @@ const workcarddetails = [
 
 const signinsecuritycarddetails = [
   {
+    gradientclass: styles.signin_gradient,
     cardimg: signin,
     cardheading: "Sign-In and Security",
     carddesc:
@@ -91,7 +83,8 @@ const signinsecuritycarddetails = [
 
 const policycarddetails = [
   {
-    cardimg: workpolicy,
+    gradientclass: styles.policy_gradient,
+    cardimg: workplace,
     cardheading: "Workspace Policies",
     carddesc:
       "Get to know the rules and policies of Mirats Insights Workplace.",
@@ -100,6 +93,7 @@ const policycarddetails = [
 
 const documentationcarddetails = [
   {
+    gradientclass: styles.documents_gradient,
     cardimg: documents,
     cardheading: "Documentation & Legal",
     carddesc:
@@ -112,169 +106,47 @@ const leftpages = [
   {
     name: "Personal Information",
     value: "personal-information",
+    urllink: "personal-information",
   },
   {
     name: "Financial Details",
     value: "financial-details",
+    urllink: "financial-details",
   },
   {
     name: "Identity Details",
     value: "identity-details",
+    urllink: "identity-details",
   },
   {
     name: "Work Details",
     value: "work-details",
+    urllink: "work-details",
   },
   {
     name: "Sign-In and Security",
     value: "signin-security",
+    urllink: "signin-security",
   },
   {
     name: "Policies",
     value: "policies",
+    urllink: "policies",
   },
   {
     name: "Documents and Legal",
     value: "documents",
+    urllink: "documents",
   },
 ];
-
-// const detailsTypes = [
-//   "personal-information",
-//   "financial-details",
-//   "identity-details",
-//   "work-details",
-//   "signin-security",
-//   "policies",
-//   "documents"
-// ]
 
 const MainPage = () => {
   const { detailsTypes } = useParams();
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   return (
     <>
       <div className={styles.container}>
-        <header>
-          <section className={styles.left}>
-            <figure>
-              <img src={miratsLogo} alt="logo" />
-            </figure>
-          </section>
-          <section className={styles.right}>
-            <section className={styles.circles}></section>
-            <section className={styles.sign_in}>
-              <section className={styles.sign_in_details}>
-                <p>Rohan Gupta</p>
-                <p>Recruitment Coordinator</p>
-              </section>
-
-              <Box>
-                <Tooltip title="Account settings">
-                  <IconButton
-                    onClick={handleClick}
-                    size="small"
-                    sx={{ ml: 2 }}
-                    aria-controls={open ? "account-menu" : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
-                  >
-                    <Avatar sx={{ width: 40, height: 40, objectFit: "cover" }}>
-                      {/* <figure>
-                    <img src={profileImg} alt="profileimg" />
-                  </figure> */}
-                    </Avatar>
-                  </IconButton>
-                </Tooltip>
-              </Box>
-              <Menu
-                anchorEl={anchorEl}
-                id="account-menu"
-                open={open}
-                onClose={handleClose}
-                onClick={handleClose}
-                PaperProps={{
-                  elevation: 0,
-                  sx: {
-                    overflow: "visible",
-                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                    mt: 1.5,
-                    "& .MuiAvatar-root": {
-                      width: 32,
-                      height: 32,
-                      ml: -0.5,
-                      mr: 1,
-                    },
-                    "&:before": {
-                      content: '""',
-                      display: "block",
-                      position: "absolute",
-                      top: 0,
-                      right: 14,
-                      width: 10,
-                      height: 10,
-                      bgcolor: "background.paper",
-                      transform: "translateY(-50%) rotate(45deg)",
-                      zIndex: 0,
-                    },
-                  },
-                }}
-                transformOrigin={{ horizontal: "right", vertical: "top" }}
-                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-              >
-                <MenuItem>
-                  <Avatar /> Profile
-                </MenuItem>
-                <MenuItem>
-                  <Avatar /> My account
-                </MenuItem>
-                <Divider />
-                <MenuItem>
-                  <ListItemIcon>
-                    <PersonAdd fontSize="small" />
-                  </ListItemIcon>
-                  Add another account
-                </MenuItem>
-                <MenuItem>
-                  <ListItemIcon>
-                    <Settings fontSize="small" />
-                  </ListItemIcon>
-                  Settings
-                </MenuItem>
-                <MenuItem>
-                  <ListItemIcon>
-                    <Logout fontSize="small" />
-                  </ListItemIcon>
-                  Logout
-                </MenuItem>
-              </Menu>
-            </section>
-          </section>
-        </header>
-
-        {/* profile intro */}
-        {/* <div className={styles.profileIntro}>
-          <section className={styles.profile_desc}>
-            <h1>
-              Morning, <span>Rohan</span>
-            </h1>
-            <p className={styles.quote}>Follow Your Passion</p>
-          </section>
-          <section className={styles.profileImg}>
-            <figure>
-              <img src={portalprofile} alt="profileimg" />
-            </figure>
-          </section>
-        </div> */}
+        <Header />
         <ProfileIntro profileintrodata={profiledetailsintro} />
 
         {/* navigation */}
@@ -282,7 +154,8 @@ const MainPage = () => {
           <nav>
             <ul>
               <li>
-                <Link to="/dashboard/attendance">Attendance</Link>
+                Attendance
+                {/* <Link to="/dashboard/attendance">Attendance</Link> */}
               </li>
               <li>Leave</li>
               <li>Salary</li>
@@ -309,13 +182,16 @@ const MainPage = () => {
                   <div className={styles.pages}>
                     {/* <h4 className={styles.light}>{pages.name}</h4> */}
 
-                    <h4
-                      className={cx(styles.light, {
-                        [styles.active]:
-                          detailsTypes === pages?.value ? styles.active : "",
-                      })}
-                    >
-                      {pages.name}
+                    <h4>
+                      <Link
+                        className={cx(styles.light, {
+                          [styles.active]:
+                            detailsTypes === pages?.value ? styles.active : "",
+                        })}
+                        to={`/${pages.urllink}`}
+                      >
+                        {pages.name}
+                      </Link>
                     </h4>
                   </div>
                 );
@@ -387,7 +263,7 @@ const PersonalInformation = () => {
           </section>
           <section className={styles.card_body}>
             <h1>Nickname</h1>
-            <p>unsecified</p>
+            <p>unspecified</p>
           </section>
           <section className={styles.card_body}>
             <h1>Profile Picture</h1>
@@ -410,7 +286,7 @@ const FinancialDetails = () => {
       <div className={styles.bankDetails_container}>
         <div className={styles.bank_details}>
           <section className={styles.details_wrapper}>
-            <h3>Default Bank</h3>
+            <h1>Default Bank</h1>
             <p>Rohan Gupta</p>
             <p>ICICI Bank</p>
             <p>ICIC00000XXXX</p>
@@ -420,19 +296,23 @@ const FinancialDetails = () => {
         </div>
 
         <div className={styles.bank_details}>
-          <h3>Default UPI</h3>
-          <p>Rohan Gupta</p>
-          <p>Google Pay</p>
-          <p>rohang@oksbi</p>
+          <section className={styles.details_wrapper}>
+            <h1>Default UPI</h1>
+            <p>Rohan Gupta</p>
+            <p>Google Pay</p>
+            <p>rohang@oksbi</p>
+          </section>
           <button>Edit Details</button>
         </div>
 
         <div className={styles.bank_details}>
-          <h3>Use Other Bank</h3>
-          <p>Rohan Gupta</p>
-          <p>ICICI Bank</p>
-          <p>ICIC00000XXXX</p>
-          <p>123456789012</p>
+          <section className={styles.details_wrapper}>
+            <h1>Use Other Bank</h1>
+            <p>Rohan Gupta</p>
+            <p>ICICI Bank</p>
+            <p>ICIC00000XXXX</p>
+            <p>123456789012</p>
+          </section>
           <button>Edit Details</button>
         </div>
       </div>
@@ -631,5 +511,5 @@ const Documentation = () => {
 
 export default MainPage;
 
-// server link - 
+// server link -
 // urls

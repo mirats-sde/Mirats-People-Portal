@@ -12,17 +12,25 @@
 }
 
 .profile_desc h1 {
-  font-size: 3em;
-  font-weight: 300;
+  font-size: 4em;
+  font-weight: 500;
 }
+
+/* .profile_desc span {
+  color: linear-gradient(
+    to right,
+    #ddd6f3,
+    #faaca8
+  );
+} */
 
 .profile_desc .quote {
   text-align: center;
   margin-top: 0.8em;
-  font-size: 22px;
+  font-size: 24px;
 }
 
-.profile_desc span {
+.profile_desc .gradient {
   color: #bf92b8;
 }
 

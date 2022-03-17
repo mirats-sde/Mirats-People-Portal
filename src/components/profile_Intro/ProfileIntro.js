@@ -6,7 +6,9 @@ const ProfileIntro = ({ profileintrodata }) => {
       {profileintrodata.map((profiledata) => (
         <div className={styles.profileIntro}>
           <section className={styles.profile_desc}>
-            <h1>Morning, {profiledata.profileName}</h1>
+            <h1>
+              <span>{profiledata.time}</span>, <span className={styles.gradient}>{profiledata.profileName}</span>
+            </h1>
             <p className={styles.quote}>{profiledata.profiledesc}</p>
           </section>
           <section className={styles.profileImg}>
@@ -21,4 +23,3 @@ const ProfileIntro = ({ profileintrodata }) => {
 };
 
 export default ProfileIntro;
-

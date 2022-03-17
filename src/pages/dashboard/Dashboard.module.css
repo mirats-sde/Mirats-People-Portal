@@ -1,0 +1,350 @@
+.dashboard {
+  /* width: 1500px; */
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.personal_info_card,
+.work_info_card {
+  display: flex;
+  /* justify-content:flex-start; */
+  border-radius: 30px;
+  /* padding-top: 1.5em; */
+  /* width: 678px; */
+  /* height: 300px; */
+  /* padding: 2em; */
+  /* padding: 0em 3em; */
+  padding-top: 2em;
+  margin-bottom: 1.5em;
+  width: 840px;
+  height: 282px;
+}
+
+.personal_info_card {
+  background: linear-gradient(
+    264.82deg,
+    rgba(189, 192, 255, 0.56) -0.41%,
+    rgba(255, 191, 177, 0.4) 63.33%
+  );
+}
+
+.personal_info_card img {
+  /* border: 1px solid gray; */
+  /* margin-right: 1em; */
+  width: 250px;
+  height: 100%;
+  object-fit: contain;
+  /* object-fit: cover; */
+}
+
+.personal_info_card .card_details h1,
+.work_info_card .card_details h1 {
+  font-size: 36px;
+  line-height: 44px;
+  font-weight: 300;
+  margin-bottom: 0.3em;
+}
+
+.personal_info_card .card_details p,
+.work_details_card .card_details p {
+  font-size: 21px;
+  line-height: 29px;
+  color: #5f5f5f;
+  width: 28vw;
+  font-weight: 300;
+}
+
+.work_details_card .card_details h1 {
+  margin-top: 0.8em;
+}
+
+.work_details_card .card_details p {
+  width: 25vw;
+}
+
+.card_details,
+.personal_info_card figure {
+  /* border: 1px solid red; */
+  /* height: 15vw; */
+  padding-bottom: 1.5em;
+}
+
+.dashboard_stats {
+  /* border: 1px solid red; */
+  display: grid;
+  grid-template-columns: repeat(5, auto);
+  place-items: center;
+  box-shadow: -1px 8px 12px -3px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+  width: 1300px;
+  /* width: 85vw; */
+  height: 149px;
+  /* padding: 0.2em 0; */
+  margin: 0 auto;
+}
+
+.stats_card .stats_body {
+  /* border: 1px solid brown; */
+  box-shadow: 0px 4px 15px 1px rgba(0, 0, 0, 0.25);
+  border-radius: 104px;
+  /* height: 110px; */
+  width: 140px;
+  text-align: center;
+  padding: 0.2em 0;
+  margin-bottom: 0.5em;
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* height: 92px; */
+}
+
+.stats_body h2,
+.stats_body span {
+  font-weight: 700;
+}
+
+.stats_body h2 {
+  font-size: 24px;
+}
+
+.stats_body span {
+  font-size: 50px;
+}
+
+.monthly_stats p {
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 0.5em;
+  /* font-size: 20px; */
+}
+
+/* navigation */
+.navigation {
+  display: flex;
+  justify-content: center;
+  margin-top: 2em;
+}
+
+.navigation nav ul {
+  display: flex;
+  /* border: 1px solid blue; */
+}
+
+.navigation nav ul li {
+  /* border: 1px solid red; */
+  padding: 1em 3em;
+  margin-right: 2em;
+  border: 0.1px solid #ffffff;
+  box-shadow: -1px 8px 12px -3px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+  font-weight: 500;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* dashboard cards */
+.id_details_cards {
+  /* border: 1px solid red; */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  /* width: 85vw; */
+  width: 1300px;
+  margin: 2em auto;
+  /* margin-bottom: 32px; */
+}
+
+.left_grid {
+  /* border: 1px solid brown; */
+  width: 450px;
+  /* width: 30vw; */
+}
+
+.idinfo_card {
+  width: 420px;
+  /* height: 350px; */
+  height: 380px;
+  padding: 2em;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 32px;
+}
+
+.idinfo_card h1 {
+  font-size: 36px;
+  line-height: 44px;
+}
+
+.idinfo_card .email {
+  font-size: 22px;
+  line-height: 29px;
+  color: #868686;
+}
+
+.links_id {
+  /* border: 1px solid violet; */
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5em;
+}
+
+.links_id figure {
+  /* border: 1px solid blue; */
+  margin-right: -2em;
+}
+
+.links p {
+  color: #5f5f5f;
+  font-size: 21px;
+  line-height: 29px;
+}
+
+/* announcements */
+.announcements {
+  background: linear-gradient(
+    284.36deg,
+    rgba(216, 229, 255, 0.56) -5.59%,
+    rgba(222, 255, 221, 0.4) 103.9%
+  );
+  border-radius: 30px;
+  width: 420px;
+  height: 154px;
+  padding: 2em;
+  margin-top: 2em;
+}
+
+.announcements h1 {
+  font-size: 36px;
+  line-height: 44px;
+  margin-bottom: 0.3em;
+}
+
+.announcements p {
+  font-size: 21px;
+  line-height: 29px;
+  color: #5f5f5f;
+}
+
+/* right grid */
+.right_grid {
+  /* border: 1px solid blue; */
+  width: 850px;
+  /* width: 55vw; */
+}
+
+/* finanace identity */
+.financial_identity {
+  display: flex;
+  justify-content: space-between;
+}
+
+.financial_details,
+.identity_details {
+  /* width: 350px; */
+  width: 400px;
+  height: 282px;
+  border-radius: 30px;
+  padding: 2.5em;
+}
+
+.financial_details {
+  background: linear-gradient(
+    313.11deg,
+    rgba(250, 255, 218, 0.56) 36.95%,
+    rgba(177, 255, 227, 0.4) 84.27%
+  );
+}
+
+.identity_details {
+  /* background-color: #e0e0e0; */
+  border: 1px solid #d1d1d1;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  border-radius: 30px;
+}
+
+.text_card {
+  display: flex;
+  align-items: center;
+}
+
+.text_card h1 {
+  font-size: 36px;
+  line-height: 44px;
+  /* border: 1px solid red; */
+  width: 13vw;
+}
+
+.financial_details p,
+.identity_details p {
+  font-size: 21px;
+  line-height: 29px;
+  color: #5f5f5f;
+  margin-top: 1em;
+  width: 15vw;
+}
+
+/* work, documents, policies */
+.bottom_details_cards {
+  /* border: 1px solid red; */
+  display: flex;
+  justify-content: space-between;
+  /* width: 85vw; */
+  width: 1300px;
+  margin: 2em auto;
+}
+
+.work_info_card {
+  background: linear-gradient(
+    264.82deg,
+    rgba(237, 237, 237, 0.56) -0.41%,
+    rgba(223, 223, 223, 0.4) 63.33%
+  );
+  border-radius: 30px;
+}
+
+.work_details_card {
+  width: 850px;
+}
+
+.documents_card {
+  background: linear-gradient(
+    284.36deg,
+    rgba(252, 255, 216, 0.56) -5.59%,
+    rgba(255, 221, 241, 0.4) 103.9%
+  );
+  border-radius: 30px;
+  padding: 2em 3em;
+}
+
+.document_card_details h1 {
+  font-size: 36px;
+  line-height: 44px;
+  margin-bottom: 0.3em;
+}
+
+.document_card_details p {
+  font-size: 21px;
+  line-height: 29px;
+  color: #5f5f5f;
+  font-weight: 300;
+}
+
+/* policies */
+.policies {
+  width: 30vw;
+  width: 420px;
+  height: 545px;
+  text-align: center;
+  padding: 1em;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 32px;
+}
+
+.policies h1 {
+  font-size: 36px;
+  line-height: 44px;
+  margin: 0.5em 0;
+}
+
+.policies p {
+  font-size: 21px;
+  line-height: 29px;
+  color: #5f5f5f;
+}

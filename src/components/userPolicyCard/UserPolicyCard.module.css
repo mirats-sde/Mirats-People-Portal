@@ -11,7 +11,7 @@
   border-radius: 32px;
   /* height: 15vw; */
   width: 25vw;
-  height: 14vw;
+  height: 12vw;
   margin-bottom: 2em;
 }
 
@@ -29,11 +29,20 @@
 }
 
 .policy_card_body a {
+  /* background-color: #6385ff;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+  padding: 0.5em 1.2em; */
   background-color: #6385ff;
   border-radius: 6px;
   color: #fff;
   font-size: 14px;
-  padding: 0.5em 1.2em;
+  font-weight: 500;
+  padding: 0.5em 2em;
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
 }
 
 .policy_card_body a:hover {
