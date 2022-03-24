@@ -1,0 +1,128 @@
+.attendance_container {
+  /* border: 1px solid red; */
+  width: 1200px;
+  margin: 2em auto;
+}
+
+/* .attendance_table {
+  border: 1px solid red;
+  margin-bottom: 2em;
+} */
+
+.attendance_cards {
+  display: flex;
+  justify-content: space-between;
+}
+
+.attendance_banner {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 32px;
+  padding: 2em 3em;
+  width: 400px;
+  height: 178px;
+}
+
+.attendance_banner h1,
+.work_banner h1 {
+  font-size: 32px;
+  line-height: 44px;
+}
+
+.attendance_banner p,
+.work_banner p {
+  color: var(--light_gray);
+  font-size: 21px;
+  line-height: 29px;
+  margin-top: 0.3em;
+}
+
+.work_banner {
+  background: linear-gradient(
+    284.36deg,
+    rgba(216, 229, 255, 0.56) -5.59%,
+    rgba(222, 255, 221, 0.4) 103.9%
+  );
+  border-radius: 30px;
+  width: 420px;
+  /* width: 500px; */
+  height: 178px;
+  padding: 2em 3.5em;
+}
+
+.login,
+.logout {
+  width: 270px;
+  height: 82px;
+  border-radius: 21px;
+  padding: 1em 2em;
+  cursor: pointer;
+}
+
+.login {
+  background: rgba(189, 255, 204, 0.56);
+  margin-bottom: 1em;
+}
+
+.login:hover {
+  background: rgba(132, 245, 159, 0.56);
+}
+
+.logout {
+  background: rgba(255, 224, 177, 0.4);
+}
+
+.logout:hover {
+  background: rgba(248, 186, 92, 0.4);
+  /* transform: translateY(-2px); */
+}
+
+.login p,
+.logout p {
+  text-align: center;
+  font-size: 21px;
+  line-height: 25px;
+}
+
+/* attendance filter */
+.attendance_filter {
+  padding: 2em;
+  margin: 2em 0;
+  border-radius: 23px;
+  border: 1px solid #eaeaea;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 23px;
+}
+
+.filter_cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1em;
+  margin: 1em 0;
+}
+
+.filter_cards .cardbody {
+  border-radius: 21px;
+  background-color: white;
+  padding: 0.5em;
+  width: 205px;
+  height: 100px;
+  text-align: center;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.filter_cards .cardbody p {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 36px;
+  color: #484848;
+}
+
+.filter_cards .cardbody select {
+  background: rgba(238, 238, 238, 0.75);
+  border-radius: 21px;
+  border: none;
+  width: 90%;
+  padding: 0.8em 4em;
+  text-align: center;
+  outline: none;
+}

@@ -3,6 +3,10 @@
   margin: 0 auto;
 }
 
+.card_body h1, .card_body p {
+  word-wrap: break-word;
+}
+
 .light {
   font-weight: 300;
   margin-bottom: 0.3em;
@@ -102,14 +106,16 @@
   /* border: 1px solid blue; */
   display: flex;
   justify-content: space-between;
+  width: 1200px;
+  margin: 0 auto;
   /* height: 100vh; */
-  margin: 3em 5em;
+  /* margin: 3em 5em; */
 }
 
 /* left */
 .profile_left {
-  /* border: 1px solid red; */
   border: 1px solid #e0e0e0;
+  /* border: 1px solid red; */
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   width: 33%;
   height: 50%;
@@ -148,8 +154,9 @@
 /* right */
 .profile_right {
   /* width: 55vw; */
-  width: 840px;
+  width: 750px;
   border-radius: 32px;
+  /* border: 1px solid yellowgreen; */
 }
 
 .personal_info_card {
@@ -206,6 +213,7 @@
   /* width: 313px; */
   /* width: 26vw; */
   height: 150px;
+  cursor: pointer;
 }
 
 .card_body h1 {
@@ -245,7 +253,8 @@
   border: 1px solid #e0e0e0;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 32px;
-  width: 25vw;
+  width: 350px;
+  /* width: 25vw; */
   margin-bottom: 2em;
 }
 
@@ -262,7 +271,7 @@
 }
 
 .address {
-  height: 10vw;
+  height: 180px;
 }
 
 .FinancialDetails_btn button {
@@ -283,7 +292,7 @@
     rgba(214, 214, 255, 0.57) 100%
   );
   cursor: pointer;
-  border: none;
+  /* border: none; */
 }
 
 .bankDetails_container {
@@ -298,7 +307,8 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 32px;
   /* height: 15vw; */
-  width: 26vw;
+  /* width: 26vw; */
+  width: 350px;
   margin-bottom: 2em;
 }
 
@@ -316,7 +326,8 @@
 }
 
 .details_wrapper {
-  height: 13vw;
+  /* height: 13vw; */
+  height: 200px;
 }
 
 .bank_details button,
@@ -352,8 +363,8 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 32px;
   /* height: 15vw; */
-  width: 26vw;
-  height: 15vw;
+  /* width: 26vw; */
+  height: 250px;
   margin-bottom: 2em;
 }
 
@@ -374,18 +385,18 @@
 .signinsecutity_cards {
   margin: 2em 0;
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5em;
 }
 
 .signinsecutity_card_body {
-  padding: 2em;
+  padding: 2.5em;
   border: 1px solid #e0e0e0;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 32px;
   /* height: 15vw; */
-  width: 26vw;
-  height: 12vw;
+  /* width: 26vw; */
+  /* height: 12vw; */
   margin-bottom: 2em;
 }
 
@@ -428,7 +439,8 @@
 .documentation_cards {
   margin: 2em 0;
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1em;
 }
 
 .documentation_card_body {
@@ -437,8 +449,7 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 32px;
   /* height: 15vw; */
-  width: 25vw;
-  height: 15vw;
+  /* width: 25vw; */
   margin-bottom: 2em;
 }
 
@@ -458,4 +469,49 @@
 .underline {
   font-style: italic;
   text-decoration: underline;
+}
+
+/* form */
+.nameform {
+  background: rgba(238, 235, 235, 0.39);
+  /* background: rgba(188, 188, 188, 0.39); */
+  background: #f4f4f4;
+  box-shadow: 0px 0px 40px 4px rgba(0, 0, 0, 0.25);
+  width: 500px;
+  padding: 2em;
+}
+
+.form_btns {
+  /* border: 1px solid red; */
+  text-align: center;
+  background: #f4f4f4;
+  /* background-color: rgba(188, 188, 188, 0.39); */
+  border-radius: 32px;
+  display: flex;
+  justify-content: space-around;
+  margin-top: -1em;
+  padding-bottom: 1.5em;
+  /* width: 757px; */
+}
+
+.form_btns button {
+  width: 150px;
+  height: 45px;
+  border-radius: 32px;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.form_btns .cancel {
+  background: #dfdfdf;
+}
+
+.form_btns .save {
+  background-color: var(--btn_color);
+  color: white;
+}
+
+.field {
+  margin: 10px 0;
 }

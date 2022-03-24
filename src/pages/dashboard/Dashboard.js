@@ -9,12 +9,15 @@ import workpolicycard from "../../assets/workpolicycard.png";
 
 import Header from "../../components/header/Header";
 import ProfileIntro from "../../components/profile_Intro/ProfileIntro";
+import DashboardStats from "../../components/dashboard_stats/DashboardStats";
+import Navigation from "../../components/navigation/Navigation";
+import Footer from "../../components/footer/Footer";
 
 const dashboardintro = [
   {
     time: "Afternoon",
     profileName: "Rohan",
-    profiledesc: "Here is your dashboard looks like today.",
+    profiledesc: "Here is what your dashboard looks like today.",
     profileimg: portalprofile,
   },
 ];
@@ -26,69 +29,10 @@ const Dashboard = () => {
       <ProfileIntro profileintrodata={dashboardintro} />
 
       {/* stats cards */}
-      <div className={styles.dashboard_stats}>
-        <div className={styles.stats_card}>
-          <section className={styles.stats_body}>
-            <h2>days</h2>
-            <span>24</span>
-          </section>
-          <section className={styles.monthly_stats}>
-            <p>worked this month</p>
-          </section>
-        </div>
-        <div className={styles.stats_card}>
-          <section className={styles.stats_body}>
-            <h2>days</h2>
-            <span>0</span>
-          </section>
-          <section className={styles.monthly_stats}>
-            <p>absent this month</p>
-          </section>
-        </div>
-        <div className={styles.stats_card}>
-          <section className={styles.stats_body}>
-            <h2>days</h2>
-            <span>2</span>
-          </section>
-          <section className={styles.monthly_stats}>
-            <p>taken leave this year</p>
-          </section>
-        </div>
-        <div className={styles.stats_card}>
-          <section className={styles.stats_body}>
-            <h2>3 feb</h2>
-            <span>22</span>
-          </section>
-          <section className={styles.monthly_stats}>
-            <p>joining date</p>
-          </section>
-        </div>
-        <div className={styles.stats_card}>
-          <section className={styles.stats_body}>
-            <h2>3 Oct</h2>
-            <span>99</span>
-          </section>
-          <section className={styles.monthly_stats}>
-            <p>date of birth</p>
-          </section>
-        </div>
-      </div>
+      <DashboardStats />
 
       {/* navigation */}
-      <div className={styles.navigation}>
-        <nav>
-          <ul>
-            <li>
-              Attendance
-              {/* <Link to="/dashboard/attendance">Attendance</Link> */}
-            </li>
-            <li>Leave</li>
-            <li>Salary</li>
-            <li>Policies</li>
-            <li>Resignation</li>
-          </ul>
-        </nav>
-      </div>
+      <Navigation />
 
       {/* dashboard cards */}
       <div className={styles.dashboard_cards}>
@@ -190,6 +134,8 @@ const Dashboard = () => {
           </section>
         </div>
       </div>
+      {/* footer */}
+      <Footer />
     </div>
   );
 };

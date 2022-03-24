@@ -36,7 +36,9 @@ const Header = () => {
           </figure>
         </section>
         <section className={styles.right}>
-          <section className={styles.circles}></section>
+          <section className={styles.miratsid}>
+            <p className={styles.id}>Mirats ID</p>
+          </section>
           <section className={styles.sign_in}>
             <section className={styles.sign_in_details}>
               <p>Rohan Gupta</p>

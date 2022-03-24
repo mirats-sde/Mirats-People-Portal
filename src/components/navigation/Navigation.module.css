@@ -1,0 +1,51 @@
+/* navigation */
+/* .default {
+  border: 1px solid red;
+  padding: 1em 3em;
+  margin-right: 2em;
+  border: 0.1px solid #ffffff;
+  box-shadow: -1px 8px 12px -3px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+  font-weight: 500;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.linkactive {
+  color: #ff6767;
+  font-weight: 500;
+} */
+
+.navigation {
+  display: flex;
+  justify-content: center;
+  margin: 2em 0;
+  /* border: 1px solid blue; */
+}
+
+.navigation nav ul {
+  display: flex;
+  justify-content: center;
+  /* border: 1px solid blue; */
+}
+
+.navigation nav ul li {
+  padding: 1em 3em;
+  margin-right: 2em;
+  border: 0.1px solid #ffffff;
+  box-shadow: -1px 8px 12px -3px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+  font-weight: 500;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.navigation nav ul li a {
+  color: black;
+  font-weight: 500;
+}
+
+.navcontainer {
+  border: 1px solid transparent;
+  margin: 2em 0;
+}

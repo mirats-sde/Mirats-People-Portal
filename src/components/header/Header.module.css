@@ -16,7 +16,20 @@ header {
 
 .right {
   /* margin-right: 1em; */
-  /* display: flex; */
+  /* border: 1px solid red; */
+  /* width: 370px; */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.miratsid {
+  padding: 0.4em 1.2em;
+  /* border: 1px solid #434343; */
+  border: 1px solid var(--primary_text_color);
+  border-radius: 30px;
+  text-align: center;
+  margin-right: 1em;
 }
 
 .sign_in {
@@ -26,7 +39,7 @@ header {
 
 .right .sign_in p {
   color: var(--primary_text_color);
-  font-size: 0.9em;
+  /* font-size: 0.9em; */
 }
 
 .sign_in_details img {

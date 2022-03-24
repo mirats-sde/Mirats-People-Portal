@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 // hooks
 import { useParams } from "react-router-dom";
+import { useState } from "react";
 
 // in project imports
 import styles from "./MainPage.module.css";
@@ -21,6 +22,14 @@ import Footer from "../../components/footer/Footer";
 import UserPolicyCard from "../../components/userPolicyCard/UserPolicyCard";
 import ProfileIntro from "../../components/profile_Intro/ProfileIntro";
 import Header from "../../components/header/Header";
+import Navigation from "../../components/navigation/Navigation";
+
+//  Mui Dailog -
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+// import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 const profiledetailsintro = [
   {
@@ -150,20 +159,7 @@ const MainPage = () => {
         <ProfileIntro profileintrodata={profiledetailsintro} />
 
         {/* navigation */}
-        <div className={styles.navigation}>
-          <nav>
-            <ul>
-              <li>
-                Attendance
-                {/* <Link to="/dashboard/attendance">Attendance</Link> */}
-              </li>
-              <li>Leave</li>
-              <li>Salary</li>
-              <li>Policies</li>
-              <li>Resignation</li>
-            </ul>
-          </nav>
-        </div>
+        <Navigation />
 
         {/* profile details */}
         <div className={styles.profile_details}>
@@ -230,18 +226,122 @@ const MainPage = () => {
 };
 
 const PersonalInformation = () => {
+  // name
+  const [namedialog, setnamedialog] = useState(false);
+
+  // date of birth
+  const [birth, setdob] = useState(false);
+
+  const handleClickOpen = (statechanger) => {
+    statechanger(true);
+  };
+  const handleClose = (statechanger) => {
+    statechanger(false);
+  };
+
   return (
     <>
       <div className={styles.profile_info}>
         <CardInfo carddata={personalinfocarddetails} />
 
         {/* profile details cards */}
+        {/* Dailog Box */}
+
+        {/* name dialog box */}
+        <Dialog
+          sx={{ borderRadius: "25" }}
+          open={namedialog}
+          onClose={() => handleClose(setnamedialog)}
+        >
+          <div className={styles.nameform}>
+            <DialogTitle>
+              <h2>Name</h2>
+            </DialogTitle>
+            <DialogContent>
+              <div className={styles.field}>
+                <TextField
+                  margin="dense"
+                  // className={styles.textfield}
+                  // className={classes.root}
+                  id="name"
+                  label="First Name"
+                  fullWidth
+                  variant="outlined"
+                  // inputProps={{ sx: { color: "#fff" } }}
+                />
+              </div>
+              <div className={styles.field}>
+                <TextField
+                  margin="dense"
+                  id="name"
+                  label="Middle Name (optional)"
+                  fullWidth
+                  variant="outlined"
+                />
+              </div>
+              <div className={styles.field}>
+                <TextField
+                  margin="dense"
+                  id="name"
+                  label="Last Name"
+                  fullWidth
+                  variant="outlined"
+                />
+              </div>
+            </DialogContent>
+            {/* <FormBtn /> */}
+          </div>
+          <div className={styles.form_btns}>
+            <button
+              className={styles.cancel}
+              onClick={() => handleClose(setnamedialog)}
+            >
+              Cancel
+            </button>
+            <button className={styles.save}>Save</button>
+          </div>
+        </Dialog>
+
+        {/* Dailog Box */}
+        {/* date of birth dialg box */}
+        <Dialog
+          sx={{ borderRadius: "25" }}
+          open={birth}
+          onClose={() => handleClose(setdob)}
+        >
+          <div className={styles.nameform}>
+            <DialogTitle>
+              <h2>Date of Birth</h2>
+              <h4>Please review your date of birth.</h4>
+            </DialogTitle>
+            <DialogContent>
+              <div className={styles.field}></div>
+            </DialogContent>
+            {/* <FormBtn /> */}
+          </div>
+          <div className={styles.form_btns}>
+            <button
+              className={styles.cancel}
+              onClick={() => handleClose(setdob)}
+            >
+              Cancel
+            </button>
+            <button className={styles.save}>Save</button>
+          </div>
+        </Dialog>
+
         <div className={styles.profile_details_cards}>
-          <section className={styles.card_body}>
+          <section
+            onClick={() => handleClickOpen(setnamedialog)}
+            className={styles.card_body}
+          >
             <h1>Name</h1>
             <p>Rohan Gupta</p>
           </section>
-          <section className={styles.card_body}>
+          <section
+            onClick={() => handleClickOpen(setdob)}
+            className={styles.card_body}
+          >
             <h1>Date of Birth</h1>
             <p>03 October, 1999</p>
           </section>
@@ -510,6 +610,3 @@ const Documentation = () => {
 };
 
 export default MainPage;
-
-// server link -
-// urls

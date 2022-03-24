@@ -28,7 +28,7 @@ const userpolicycarddata = [
   },
 ];
 
-function UserPolicyCard() {
+const UserPolicyCard = () => {
   return (
     <>
       <div className={styles.policy_card}>
@@ -42,6 +42,6 @@ function UserPolicyCard() {
       </div>
     </>
   );
-}
+};
 
 export default UserPolicyCard;
