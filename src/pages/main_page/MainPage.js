@@ -23,13 +23,28 @@ import UserPolicyCard from "../../components/userPolicyCard/UserPolicyCard";
 import ProfileIntro from "../../components/profile_Intro/ProfileIntro";
 import Header from "../../components/header/Header";
 import Navigation from "../../components/navigation/Navigation";
-
-//  Mui Dailog -
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-// import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
+import NameDialog from "../../pages/main_page/components/PersonalDetails/NameDialog";
+import DOB from "../../pages/main_page/components/PersonalDetails/DOB";
+import Gender from "../../pages/main_page/components/PersonalDetails/Gender";
+import Number from "../../pages/main_page/components/PersonalDetails/Number";
+import Email from "../../pages/main_page/components/PersonalDetails/Email";
+import Location from "../../pages/main_page/components/PersonalDetails/Location";
+import Nickname from "../../pages/main_page/components/PersonalDetails/Nickname";
+import ProfilePicture from "../../pages/main_page/components/PersonalDetails/ProfilePicture";
+import BankDetails from "./components/FinancialDetails/BankDetails";
+import UpiDetails from "./components/FinancialDetails/UpiDetails";
+import Address from "./components/IdentityDetails/Address";
+import DrivingLicense from "./components/IdentityDetails/DrivingLicense";
+import AadharCard from "./components/IdentityDetails/AadharCard";
+import PanCard from "./components/IdentityDetails/PanCard";
+import Position from "./components/WorkDetails/Position";
+import Department from "./components/WorkDetails/Departments";
+import TeamName from "./components/WorkDetails/TeamName";
+import TeamLeader from "./components/WorkDetails/TeamLeader";
+import Manager from "./components/WorkDetails/Manager";
+import DOJ from "./components/WorkDetails/DOJ";
+import Shift from "./components/WorkDetails/ShiftName";
+import WorkLocation from "./components/WorkDetails/WorkLocation";
 
 const profiledetailsintro = [
   {
@@ -115,39 +130,46 @@ const leftpages = [
   {
     name: "Personal Information",
     value: "personal-information",
-    urllink: "personal-information",
+    urllink: "userdetails/personal-information",
   },
   {
     name: "Financial Details",
     value: "financial-details",
-    urllink: "financial-details",
+    urllink: "userdetails/financial-details",
   },
   {
     name: "Identity Details",
     value: "identity-details",
-    urllink: "identity-details",
+    urllink: "userdetails/identity-details",
   },
   {
     name: "Work Details",
     value: "work-details",
-    urllink: "work-details",
+    urllink: "userdetails/work-details",
   },
   {
     name: "Sign-In and Security",
     value: "signin-security",
-    urllink: "signin-security",
+    urllink: "userdetails/signin-security",
   },
   {
     name: "Policies",
     value: "policies",
-    urllink: "policies",
+    urllink: "userdetails/policies",
   },
   {
     name: "Documents and Legal",
     value: "documents",
-    urllink: "documents",
+    urllink: "userdetails/documents",
   },
 ];
+
+const handleClickOpen = (statechanger) => {
+  statechanger(true);
+};
+const handleClose = (statechanger) => {
+  statechanger(false);
+};
 
 const MainPage = () => {
   const { detailsTypes } = useParams();
@@ -232,12 +254,23 @@ const PersonalInformation = () => {
   // date of birth
   const [birth, setdob] = useState(false);
 
-  const handleClickOpen = (statechanger) => {
-    statechanger(true);
-  };
-  const handleClose = (statechanger) => {
-    statechanger(false);
-  };
+  // gender
+  const [gender, setgender] = useState(false);
+
+  // phone no
+  const [phoneno, setphoneno] = useState(false);
+
+  // email
+  const [email, setemail] = useState(false);
+
+  // location
+  const [location, setLocation] = useState(false);
+
+  // nickname
+  const [nickname, setNickname] = useState(false);
+
+  // profile picture
+  const [profilepic, setProfilePic] = useState(false);
 
   return (
     <>
@@ -248,88 +281,70 @@ const PersonalInformation = () => {
         {/* Dailog Box */}
 
         {/* name dialog box */}
-        <Dialog
-          sx={{ borderRadius: "25" }}
-          open={namedialog}
-          onClose={() => handleClose(setnamedialog)}
-        >
-          <div className={styles.nameform}>
-            <DialogTitle>
-              <h2>Name</h2>
-            </DialogTitle>
-            <DialogContent>
-              <div className={styles.field}>
-                <TextField
-                  margin="dense"
-                  // className={styles.textfield}
-                  // className={classes.root}
-                  id="name"
-                  label="First Name"
-                  fullWidth
-                  variant="outlined"
-                  // inputProps={{ sx: { color: "#fff" } }}
-                />
-              </div>
-              <div className={styles.field}>
-                <TextField
-                  margin="dense"
-                  id="name"
-                  label="Middle Name (optional)"
-                  fullWidth
-                  variant="outlined"
-                />
-              </div>
-              <div className={styles.field}>
-                <TextField
-                  margin="dense"
-                  id="name"
-                  label="Last Name"
-                  fullWidth
-                  variant="outlined"
-                />
-              </div>
-            </DialogContent>
-            {/* <FormBtn /> */}
-          </div>
-          <div className={styles.form_btns}>
-            <button
-              className={styles.cancel}
-              onClick={() => handleClose(setnamedialog)}
-            >
-              Cancel
-            </button>
-            <button className={styles.save}>Save</button>
-          </div>
-        </Dialog>
+        <NameDialog
+          namedialog={namedialog}
+          setnamedialog={setnamedialog}
+          handleClose={handleClose}
+          handleClickOpen={handleClickOpen}
+        />
 
-        {/* Dailog Box */}
-        {/* date of birth dialg box */}
-        <Dialog
-          sx={{ borderRadius: "25" }}
-          open={birth}
-          onClose={() => handleClose(setdob)}
-        >
-          <div className={styles.nameform}>
-            <DialogTitle>
-              <h2>Date of Birth</h2>
-              <h4>Please review your date of birth.</h4>
-            </DialogTitle>
-            <DialogContent>
-              <div className={styles.field}></div>
-            </DialogContent>
-            {/* <FormBtn /> */}
-          </div>
-          <div className={styles.form_btns}>
-            <button
-              className={styles.cancel}
-              onClick={() => handleClose(setdob)}
-            >
-              Cancel
-            </button>
-            <button className={styles.save}>Save</button>
-          </div>
-        </Dialog>
+        {/* date of birth dialog box */}
+        <DOB
+          birth={birth}
+          setdob={setdob}
+          handleClose={handleClose}
+          handleClickOpen={handleClickOpen}
+        />
 
+        {/* gender dialog */}
+        <Gender
+          gender={gender}
+          setgender={setgender}
+          handleClose={handleClose}
+          handleClickOpen={handleClickOpen}
+        />
+
+        {/* phone number */}
+        <Number
+          phoneno={phoneno}
+          setphoneno={setphoneno}
+          handleClose={handleClose}
+          handleClickOpen={handleClickOpen}
+        />
+
+        {/* email */}
+        <Email
+          email={email}
+          setemail={setemail}
+          handleClose={handleClose}
+          handleClickOpen={handleClickOpen}
+        />
+
+        {/* location */}
+        <Location
+          location={location}
+          setLocation={setLocation}
+          handleClose={handleClose}
+          handleClickOpen={handleClickOpen}
+        />
+
+        {/* nickname */}
+        <Nickname
+          nickname={nickname}
+          setNickname={setNickname}
+          handleClose={handleClose}
+          handleClickOpen={handleClickOpen}
+        />
+
+        {/* profile pic */}
+        <ProfilePicture
+          profilepic={profilepic}
+          setProfilePic={setProfilePic}
+          handleClose={handleClose}
+          handleClickOpen={handleClickOpen}
+        />
+
+        {/* cards section */}
         <div className={styles.profile_details_cards}>
           <section
             onClick={() => handleClickOpen(setnamedialog)}
@@ -345,27 +360,45 @@ const PersonalInformation = () => {
             <h1>Date of Birth</h1>
             <p>03 October, 1999</p>
           </section>
-          <section className={styles.card_body}>
+          <section
+            onClick={() => handleClickOpen(setgender)}
+            className={styles.card_body}
+          >
             <h1>Gender</h1>
             <p>Male</p>
           </section>
-          <section className={styles.card_body}>
+          <section
+            onClick={() => handleClickOpen(setphoneno)}
+            className={styles.card_body}
+          >
             <h1>Phone Number</h1>
             <p>+91 (890) 989 8998</p>
           </section>
-          <section className={styles.card_body}>
+          <section
+            onClick={() => handleClickOpen(setemail)}
+            className={styles.card_body}
+          >
             <h1>Personal Email</h1>
             <p>rohang@email.com</p>
           </section>
-          <section className={styles.card_body}>
+          <section
+            onClick={() => handleClickOpen(setLocation)}
+            className={styles.card_body}
+          >
             <h1>Location</h1>
             <p>Mumbai, India</p>
           </section>
-          <section className={styles.card_body}>
+          <section
+            onClick={() => handleClickOpen(setNickname)}
+            className={styles.card_body}
+          >
             <h1>Nickname</h1>
             <p>unspecified</p>
           </section>
-          <section className={styles.card_body}>
+          <section
+            onClick={() => handleClickOpen(setProfilePic)}
+            className={styles.card_body}
+          >
             <h1>Profile Picture</h1>
             <p>Set Profile Picture</p>
           </section>
@@ -376,44 +409,84 @@ const PersonalInformation = () => {
 };
 
 const FinancialDetails = () => {
+  // bank details
+  const [bankDetails, setBankDetails] = useState(false);
+
+  // upi details
+  const [upiDetails, setUpiDetails] = useState(false);
+
   return (
     <div>
       <CardInfo carddata={financialcarddetails} />
       <div className={styles.FinancialDetails_btn}>
-        <button>Add Another Bank</button>
-        <button>Add Another UPI</button>
+        <button onClick={() => handleClickOpen(setBankDetails)}>
+          Add Another Bank
+        </button>
+        <button onClick={() => handleClickOpen(setUpiDetails)}>
+          Add Another UPI
+        </button>
       </div>
       <div className={styles.bankDetails_container}>
+        {/* dialog box */}
+        <BankDetails
+          bankDetails={bankDetails}
+          setBankDetails={setBankDetails}
+          handleClickOpen={handleClickOpen}
+          handleClose={handleClose}
+        />
+
+        <UpiDetails
+          upiDetails={upiDetails}
+          setUpiDetails={setUpiDetails}
+          handleClickOpen={handleClickOpen}
+          handleClose={handleClose}
+        />
+
         <div className={styles.bank_details}>
-          <section className={styles.details_wrapper}>
+          <section
+            onClick={() => handleClickOpen(setBankDetails)}
+            className={styles.details_wrapper}
+          >
             <h1>Default Bank</h1>
             <p>Rohan Gupta</p>
             <p>ICICI Bank</p>
             <p>ICIC00000XXXX</p>
             <p>123456789012</p>
           </section>
-          <button>Edit Details</button>
+          <button onClick={() => handleClickOpen(setBankDetails)}>
+            Edit Details
+          </button>
         </div>
 
         <div className={styles.bank_details}>
-          <section className={styles.details_wrapper}>
+          <section
+            onClick={() => handleClickOpen(setUpiDetails)}
+            className={styles.details_wrapper}
+          >
             <h1>Default UPI</h1>
             <p>Rohan Gupta</p>
             <p>Google Pay</p>
             <p>rohang@oksbi</p>
           </section>
-          <button>Edit Details</button>
+          <button onClick={() => handleClickOpen(setUpiDetails)}>
+            Edit Details
+          </button>
         </div>
 
         <div className={styles.bank_details}>
-          <section className={styles.details_wrapper}>
+          <section
+            onClick={() => handleClickOpen(setBankDetails)}
+            className={styles.details_wrapper}
+          >
             <h1>Use Other Bank</h1>
             <p>Rohan Gupta</p>
             <p>ICICI Bank</p>
             <p>ICIC00000XXXX</p>
             <p>123456789012</p>
           </section>
-          <button>Edit Details</button>
+          <button onClick={() => handleClickOpen(setBankDetails)}>
+            Edit Details
+          </button>
         </div>
       </div>
     </div>
@@ -421,14 +494,58 @@ const FinancialDetails = () => {
 };
 
 const IdentityDetails = () => {
+  // address
+  const [address, setAddress] = useState(false);
+
+  // driving license
+  const [drivingLicense, setDrivingLicense] = useState(false);
+
+  // aadhar card
+  const [aadharCard, setAadharCard] = useState(false);
+
+  // pancard
+  const [panCard, setPanCard] = useState(false);
+
   return (
     <div className={styles.identity_details}>
       <CardInfo carddata={identitycarddetails} />
 
+      {/* dialog box */}
+      <Address
+        address={address}
+        setAddress={setAddress}
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+      />
+
+      <DrivingLicense
+        drivingLicense={drivingLicense}
+        setDrivingLicense={setDrivingLicense}
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+      />
+
+      <AadharCard
+        aadharCard={aadharCard}
+        setAadharCard={setAadharCard}
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+      />
+
+      <PanCard
+        panCard={panCard}
+        setPanCard={setPanCard}
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+      />
+
       <section className={styles.details}>
         <button className={styles.btn_detail}>Add Passport Details</button>
         <section className={styles.details_card}>
-          <section className={styles.details_card_body}>
+          <section
+            onClick={() => handleClickOpen(setAddress)}
+            className={styles.details_card_body}
+          >
             <h1>Physical Address</h1>
             <div className={styles.address}>
               <p>Rohan Gupta</p>
@@ -436,20 +553,30 @@ const IdentityDetails = () => {
               <p>Sector 7, Dwarka</p>
               <p>New Delhi, India - 110000</p>
             </div>
-            <button>Edit Details</button>
+            <button onClick={() => handleClickOpen(setAddress)}>
+              Edit Details
+            </button>
           </section>
 
-          <section className={styles.details_card_body}>
+          <section
+            onClick={() => handleClickOpen(setDrivingLicense)}
+            className={styles.details_card_body}
+          >
             <h1>Driving License</h1>
             <div className={styles.address}>
               <p>Rohan Gupta</p>
               <p>03 Oct, 1999</p>
               <p>XXXXXXXXXXXX</p>
             </div>
-            <button>Edit Details</button>
+            <button onClick={() => handleClickOpen(setDrivingLicense)}>
+              Edit Details
+            </button>
           </section>
 
-          <section className={styles.details_card_body}>
+          <section
+            onClick={() => handleClickOpen(setAadharCard)}
+            className={styles.details_card_body}
+          >
             <h1>Aadhar Card</h1>
             <div className={styles.address}>
               <p>Rohan Gupta</p>
@@ -460,7 +587,10 @@ const IdentityDetails = () => {
             <button>Edit Details</button>
           </section>
 
-          <section className={styles.details_card_body}>
+          <section
+            onClick={() => handleClickOpen(setPanCard)}
+            className={styles.details_card_body}
+          >
             <h1>PAN Card</h1>
             <div className={styles.address}>
               <p>Rohan Gupta</p>
@@ -468,7 +598,9 @@ const IdentityDetails = () => {
               <p>S/O Rajesh Gupta</p>
               <p>BUZPK31XXX</p>
             </div>
-            <button>Edit Details</button>
+            <button onClick={() => handleClickOpen(setPanCard)}>
+              Edit Details
+            </button>
           </section>
         </section>
       </section>
@@ -477,47 +609,161 @@ const IdentityDetails = () => {
 };
 
 const WorkDetails = () => {
+  // position / job role
+  const [position, setPosition] = useState(false);
+
+  // dept
+  const [dept, setDept] = useState(false);
+
+  // team name
+  const [teamName, setTeamName] = useState(false);
+
+  // team leader
+  const [teamLeader, setTeamLeader] = useState(false);
+
+  // team manager
+  const [teamManager, setTeamManager] = useState(false);
+
+  // date of join
+  const [doj, setDoj] = useState(false);
+
+  // shift
+  const [shift, setShift] = useState(false);
+
+  // work location
+  const [workLocation, setWorkLocation] = useState(false);
+
   return (
     <div className={styles.work_details}>
       <CardInfo carddata={workcarddetails} />
+      {/* dialog box */}
+      {/* position */}
+      <Position
+        position={position}
+        setPosition={setPosition}
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+      />
+
+      <Department
+        dept={dept}
+        setDept={setDept}
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+      />
+
+      <TeamName
+        teamName={teamName}
+        setTeamName={setTeamName}
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+      />
+
+      <TeamLeader
+        teamLeader={teamLeader}
+        setTeamLeader={setTeamLeader}
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+      />
+
+      <Manager
+        teamManager={teamManager}
+        setTeamManager={setTeamManager}
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+      />
+
+      <DOJ
+        doj={doj}
+        setDoj={setDoj}
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+      />
+
+      <Shift
+        shift={shift}
+        setShift={setShift}
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+      />
+
+      <WorkLocation
+        workLocation={workLocation}
+        setWorkLocation={setWorkLocation}
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+      />
+
       <div className={styles.work_details_cards}>
-        <section className={styles.work_details_cards_body}>
+        {/* position */}
+        <section
+          onClick={() => handleClickOpen(setPosition)}
+          className={styles.work_details_cards_body}
+        >
           <h1>Position/Job Role</h1>
           <p>Software Developer Engineer</p>
           <span>Grade - A</span>
           <span>141020-1A</span>
         </section>
-        <section className={styles.work_details_cards_body}>
+        {/* dept */}
+        <section
+          onClick={() => handleClickOpen(setDept)}
+          className={styles.work_details_cards_body}
+        >
           <h1>Department</h1>
           <p>Software and Services</p>
         </section>
-        <section className={styles.work_details_cards_body}>
+        {/* team name */}
+        <section
+          onClick={() => handleClickOpen(setTeamName)}
+          className={styles.work_details_cards_body}
+        >
           <h1>Team Name</h1>
           <p>Information Technology and Services</p>
         </section>
-        <section className={styles.work_details_cards_body}>
+        {/* team leader */}
+        <section
+          onClick={() => handleClickOpen(setTeamLeader)}
+          className={styles.work_details_cards_body}
+        >
           <h1>Team Leader</h1>
           <p>Lokesh Warren Naidu</p>
           <p>Senior Software Developer Engineer</p>
           <p>lokesh.naidu@miratsinsights.com</p>
         </section>
-        <section className={styles.work_details_cards_body}>
+        {/* manager */}
+        <section
+          onClick={() => handleClickOpen(setTeamManager)}
+          className={styles.work_details_cards_body}
+        >
           <h1>Manager</h1>
           <p>Ayyan Ali</p>
           <p>Head of Global Sales</p>
           <p>ayaan.ali@miratsinsights.com</p>
         </section>
-        <section className={styles.work_details_cards_body}>
+        {/* doj */}
+        <section
+          onClick={() => handleClickOpen(setDoj)}
+          className={styles.work_details_cards_body}
+        >
           <h1>Date of Joining</h1>
           <p>Dec 6</p>
           <p>Year - 2021</p>
         </section>
-        <section className={styles.work_details_cards_body}>
+        {/* shift time */}
+        <section
+          onClick={() => handleClickOpen(setShift)}
+          className={styles.work_details_cards_body}
+        >
           <h1>Shift Name</h1>
           <p>Day Shift</p>
           <p>10 AM - 7 PM</p>
         </section>
-        <section className={styles.work_details_cards_body}>
+        {/* work location */}
+        <section
+          onClick={() => handleClickOpen(setWorkLocation)}
+          className={styles.work_details_cards_body}
+        >
           <h1>Work Location</h1>
           <p>Mumbai</p>
           <p>India</p>
@@ -610,3 +856,6 @@ const Documentation = () => {
 };
 
 export default MainPage;
+
+// figma link for this project
+// https://www.figma.com/file/rVdFZcOK7f9tfMO4l99cWH/Mirats-Peoples-Portal-(Copy)?node-id=0%3A1

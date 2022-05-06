@@ -1,0 +1,89 @@
+.salary {
+  /* width: 1500px; */
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.salary_container {
+  width: 1200px;
+  margin: 2em auto;
+}
+
+.salaryDetails_container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2em;
+  /* border: 1px solid red; */
+  margin-top: 2em;
+  width: 100%;
+}
+
+.salary_details {
+  padding: 2em;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 32px;
+  width: 350px;
+  margin-bottom: 2em;
+}
+
+.salary_details h1 {
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 0.5em;
+}
+
+.salary_details p {
+  color: #868686;
+  margin: 0.3em 0;
+  font-size: 20px;
+  word-wrap: break-word;
+}
+
+.details_wrapper {
+  /* height: 13vw; */
+  height: 200px;
+}
+
+.salary_details .view_salary {
+  background-color: #6385ff;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0.5em 2em;
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
+}
+
+.salary_details .view_salary:hover {
+  background-color: #3c66fd;
+}
+
+.cardbody {
+  border-radius: 21px;
+  background-color: white;
+  padding: 0.5em;
+  width: 205px;
+  height: 100px;
+  text-align: center;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.cardbody p {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 36px;
+  color: #484848;
+}
+
+.cardbody select {
+  background: rgba(238, 238, 238, 0.75);
+  border-radius: 21px;
+  border: none;
+  width: 90%;
+  padding: 0.8em 4em;
+  text-align: center;
+  outline: none;
+}

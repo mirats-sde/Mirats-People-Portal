@@ -29,7 +29,12 @@ const Footer = () => {
 
         <div className={styles.footer_linkContainer}>
           {footerLinksData.map((item) => {
-            return <a href={item.linkUrl}> {item.linkTitle} <span>|</span> </a>;
+            return (
+              <a href={item.linkUrl}>
+                {" "}
+                {item.linkTitle} <span>|</span>{" "}
+              </a>
+            );
           })}
         </div>
 

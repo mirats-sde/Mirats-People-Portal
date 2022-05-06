@@ -1,27 +1,35 @@
-import styles from "./Table.module.css";
-
+import styles from "../../utils/table.css";
+// import { BiEdit } from "react-icons/bi";
+import { FcReading } from "react-icons/fc";
+import { FiDownload } from "react-icons/fi";
 import { styled } from "@mui/system";
 import TablePaginationUnstyled from "@mui/base/TablePaginationUnstyled";
-
 import { useState } from "react";
 
-function createData(date, punchin, punchout, production, overtime) {
-  return { date, punchin, punchout, production, overtime };
+function createData(id, policyname, description, created, action, policyurl) {
+  return { id, policyname, description, created, action, policyurl };
 }
 
 const rows = [
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
+  createData(
+    "1",
+    "IT Policy",
+    "Employee Code of Conduct",
+    "Apr 28, 2022",
+    "../../assets/policy/emppolicy.pdf"
+  ),
+  createData(
+    "2",
+    "IT Policy",
+    "Employee Code of Conduct",
+    "Apr 28, 2022",
+    "https://www.youtube.com/watch?v=wgqX295fGkY&ab_channel=Syncfusion%2CInc"
+  ),
+  createData("3", "IT Policy", "Employee Code of Conduct", "Apr 28, 2022"),
+  createData("4", "IT Policy", "Employee Code of Conduct", "Apr 28, 2022"),
+  createData("5", "IT Policy", "Employee Code of Conduct", "Apr 28, 2022"),
+  createData("6", "IT Policy", "Employee Code of Conduct", "Apr 28, 2022"),
+  createData("7", "IT Policy", "Employee Code of Conduct", "Apr 28, 2022"),
 ];
 
 const Root = styled("div")`
@@ -35,11 +43,11 @@ const Root = styled("div")`
     font-weight: 700;
     text-align: center;
     padding: 8px;
-    font-size: 25px;
+    font-size: 20px;
   }
 
   td {
-    width: 205px;
+    // width: 205px;
     height: 58px;
     border: 1px solid #c5c5ca;
     border-radius: 21px;
@@ -49,6 +57,11 @@ const Root = styled("div")`
     margin: 20px;
     font-size: 18px;
   }
+
+  //   td:last-child {
+  //     border: none;
+  //     box-shadow: none;
+  //   }
 `;
 
 const CustomTablePagination = styled(TablePaginationUnstyled)`
@@ -116,7 +129,7 @@ const CustomTablePagination = styled(TablePaginationUnstyled)`
   }
 `;
 
-const Table = () => {
+const PolicyTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -139,30 +152,44 @@ const Table = () => {
         <table aria-label="custom pagination table" cellSpacing={15}>
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Punch In</th>
-              <th>Punch Out</th>
-              <th>Production</th>
-              <th>Overtime</th>
+              <th style={{ width: "15%" }}>ID</th>
+              <th style={{ width: "25%" }}>Policy Name</th>
+              <th style={{ width: "30%" }}>Description</th>
+              <th style={{ width: "15%" }}>Created</th>
+              <th style={{ width: "15%" }}>Action</th>
             </tr>
           </thead>
           <tbody>
             {(rowsPerPage > 0
               ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               : rows
-            ).map((row) => (
-              <>
-                {/* <div className={styles.gap}> */}
-                <tr key={row.date}>
-                  <td>{row.date}</td>
-                  <td>{row.punchin}</td>
-                  <td>{row.punchout}</td>
-                  <td>{row.production}</td>
-                  <td>{row.overtime}</td>
-                </tr>
-                {/* </div> */}
-              </>
-            ))}
+            ).map((row, i) => {
+              return (
+                <>
+                  <tr key={row.i}>
+                    <td>{row.id}</td>
+                    <td>{row.policyname}</td>
+                    <td>{row.description}</td>
+                    <td>{row.created}</td>
+                    <td>
+                      <a
+                        style={{ cursor: "pointer", marginRight: "10px" }}
+                        href={row.policyurl}
+                      >
+                        <FcReading size={30} />
+                      </a>
+                      <a
+                        download={row.policyurl}
+                        href={row.no}
+                        style={{ cursor: "pointer" }}
+                      >
+                        <FiDownload size={30} />
+                      </a>
+                    </td>
+                  </tr>
+                </>
+              );
+            })}
 
             {/* {emptyRows > 0 && (
               <tr style={{ height: 41 * emptyRows }}>
@@ -198,4 +225,4 @@ const Table = () => {
   );
 };
 
-export default Table;
+export default PolicyTable;

@@ -1,27 +1,65 @@
-import styles from "./Table.module.css";
-
+import styles from "./LeaveTable.module.css";
+import { BiEdit } from "react-icons/bi";
 import { styled } from "@mui/system";
 import TablePaginationUnstyled from "@mui/base/TablePaginationUnstyled";
 
 import { useState } from "react";
 
-function createData(date, punchin, punchout, production, overtime) {
-  return { date, punchin, punchout, production, overtime };
+import LeaveForm from "../../pages/leave/LeaveForm";
+
+function createData(leavetype, leavefrom, leaveto, noofdays, reason, status) {
+  return { leavetype, leavefrom, leaveto, noofdays, reason, status };
 }
 
 const rows = [
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
+  createData(
+    "Casual Type",
+    "Apr 21, 2022",
+    "Apr 25, 2022",
+    4,
+    "Vacation",
+    "Pending"
+  ),
+  createData(
+    "Casual Type",
+    "Apr 21, 2022",
+    "Apr 25, 2022",
+    4,
+    "Vacation",
+    "Pending"
+  ),
+  createData(
+    "Casual Type",
+    "Apr 21, 2022",
+    "Apr 25, 2022",
+    4,
+    "Vacation",
+    "Pending"
+  ),
+  createData(
+    "Casual Type",
+    "Apr 21, 2022",
+    "Apr 25, 2022",
+    4,
+    "Vacation",
+    "Pending"
+  ),
+  createData(
+    "Casual Type",
+    "Apr 21, 2022",
+    "Apr 25, 2022",
+    4,
+    "Vacation",
+    "Pending"
+  ),
+  createData(
+    "Casual Type",
+    "Apr 21, 2022",
+    "Apr 25, 2022",
+    4,
+    "Vacation",
+    "Pending"
+  ),
 ];
 
 const Root = styled("div")`
@@ -35,7 +73,7 @@ const Root = styled("div")`
     font-weight: 700;
     text-align: center;
     padding: 8px;
-    font-size: 25px;
+    font-size: 20px;
   }
 
   td {
@@ -48,6 +86,13 @@ const Root = styled("div")`
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     margin: 20px;
     font-size: 18px;
+  }
+
+  td:last-child {
+    border: none;
+    // width: 0px;
+    // height: 0px;
+    box-shadow: none;
   }
 `;
 
@@ -116,7 +161,11 @@ const CustomTablePagination = styled(TablePaginationUnstyled)`
   }
 `;
 
-const Table = () => {
+const LeaveTable = () => {
+  const [openLeaveForm, setOpenLeaveForm] = useState(false);
+  const handleLeaveFormOpen = () => setOpenLeaveForm(true);
+  const handleCloseLeaveForm = () => setOpenLeaveForm(false);
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -139,30 +188,49 @@ const Table = () => {
         <table aria-label="custom pagination table" cellSpacing={15}>
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Punch In</th>
-              <th>Punch Out</th>
-              <th>Production</th>
-              <th>Overtime</th>
+              <th>Leave Type</th>
+              <th>From</th>
+              <th>To</th>
+              <th>No. Of Days</th>
+              <th>Reason</th>
+              <th>Status</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {(rowsPerPage > 0
               ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               : rows
-            ).map((row) => (
-              <>
-                {/* <div className={styles.gap}> */}
-                <tr key={row.date}>
-                  <td>{row.date}</td>
-                  <td>{row.punchin}</td>
-                  <td>{row.punchout}</td>
-                  <td>{row.production}</td>
-                  <td>{row.overtime}</td>
-                </tr>
-                {/* </div> */}
-              </>
-            ))}
+            ).map((row, i) => {
+              return (
+                <>
+                  <tr key={row.i}>
+                    <td>{row.leavetype}</td>
+                    <td>{row.leavefrom}</td>
+                    <td>{row.leaveto}</td>
+                    <td>{row.noofdays}</td>
+                    <td>{row.reason}</td>
+                    <td>{row.status}</td>
+                    <td>
+                      <LeaveForm
+                        openLeaveForm={openLeaveForm}
+                        setOpenLeaveForm={setOpenLeaveForm}
+                        handleCloseLeaveForm={handleCloseLeaveForm}
+                        handleLeaveFormOpen={handleLeaveFormOpen}
+                        id={"something"}
+                      />
+                      <a
+                        onClick={handleLeaveFormOpen}
+                        style={{ cursor: "pointer" }}
+                        href={row.billno}
+                      >
+                        <BiEdit size={30} />
+                      </a>
+                    </td>
+                  </tr>
+                </>
+              );
+            })}
 
             {/* {emptyRows > 0 && (
               <tr style={{ height: 41 * emptyRows }}>
@@ -198,4 +266,4 @@ const Table = () => {
   );
 };
 
-export default Table;
+export default LeaveTable;
