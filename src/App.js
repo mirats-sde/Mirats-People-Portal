@@ -6,6 +6,8 @@ import MainPage from "./pages/main_page/MainPage";
 import Salary from "./pages/salary/Salary";
 import Leave from "./pages/leave/Leave";
 import Login from "./components/login/Login";
+import ForgetPassword from "./components/login/ForgetPassword";
+import ResetPassword from "./components/login/ResetPassword";
 // import NewClient from "./pages/new-client/NewClient";
 // import NewSupplier from "./pages/new-supplier/NewSupplier";
 
@@ -15,11 +17,13 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/userdetails/:detailsTypes" element={<MainPage />} />
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/attendance" element={<Attendance />} />
           <Route path="/salary" element={<Salary />} />
           <Route path="/leave" element={<Leave />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgetPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           {/* <Route path="/policy" element={<Policy />} /> */}
         </Routes>
       </BrowserRouter>

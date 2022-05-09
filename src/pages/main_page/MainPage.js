@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 // hooks
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // in project imports
 import styles from "./MainPage.module.css";
@@ -173,6 +173,9 @@ const handleClose = (statechanger) => {
 
 const MainPage = () => {
   const { detailsTypes } = useParams();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [detailsTypes]);
 
   return (
     <>

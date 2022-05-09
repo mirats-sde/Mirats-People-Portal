@@ -1,10 +1,9 @@
-import React from "react";
 import styles from "./Login.module.css";
 import logo from "../../assets/miratsLogo.png";
 import login3 from "../../assets/login3.png";
-import { Link } from "react-router-dom";
+import encryption from "../../assets/encryption.png"
 
-const Login = () => {
+const ResetPassword = () => {
   return (
     <div className={styles.login_container}>
       <div className={styles.login_content}>
@@ -14,27 +13,25 @@ const Login = () => {
 
         <form className={styles.loginForm}>
           <div className={styles.animate_label}>
-            <input type="text" id="username" required />
-            <label for="username"> Email or phone </label>
-            <line></line>
-          </div>
-
-          <div className={styles.animate_label}>
             <input type="password" id="password" required />
             <label for="password"> Password </label>
             <line></line>
           </div>
 
-          <Link to="/forgot-password">Forgot Password?</Link>
-          {/* <a href="link"> Forgot Password? </a> */}
-          <button> Log In </button>
+          <div className={styles.animate_label}>
+            <input type="password" id="confirmpassword" required />
+            <label for="confirmpassword"> Confirm Password </label>
+            <line></line>
+          </div>
+
+          <button> Reset Password </button>
         </form>
       </div>
       <div className={styles.login_img}>
-        <img src={login3} alt="loginimg" />
+        <img className={styles.reset_password} src={encryption} alt="loginimg" />
       </div>
     </div>
   );
 };
 
-export default Login;
+export default ResetPassword;
