@@ -11,20 +11,68 @@ import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import styles from "./Header.module.css";
 import miratsLogo from "../../assets/miratsLogo.png";
-import portalprofile from "../../assets/portalprofile.jpeg";
+import portalprofile from "../../assets/default-profile.jpeg";
+import { userAuthContext } from "../../pages/context/Userauthcontext";
+import { doc, getDoc, query } from "firebase/firestore";
+import { firestoredb, storage } from "../../firebase-config";
+import { useNavigate } from "react-router-dom";
+import { getDownloadURL, listAll, ref } from "firebase/storage";
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
+  const { user, logout, profileimage, userData } = useContext(userAuthContext);
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  // const [NameInfo, setNameInfo] = useState();
+
+  // //getting data from firestore:
+  // async function getNameData(id) {
+  //   console.log(id);
+  //   const q = query(
+  //     doc(
+  //       firestoredb,
+  //       "miratsinsights",
+  //       "employees",
+  //       "Personal_Info",
+  //       String(id)
+  //     )
+  //   );
+  //   const querysnapshot = await getDoc(q);
+  //   if (querysnapshot.exists()) {
+  //     console.log(querysnapshot.data());
+  //     setNameInfo({
+  //       ...NameInfo,
+  //       Name: querysnapshot.data().Name,
+  //     });
+  //   }
+  // }
+  // useEffect(() => {
+  //   getNameData(user?.uid);
+  //   console.log(NameInfo);
+  // }, [user]);
+
+  //logout form:
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      await logout();
+      navigate("/");
+      console.log("user is logged out successfully!!!!");
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 
   return (
@@ -37,12 +85,16 @@ const Header = () => {
         </section>
         <section className={styles.right}>
           <section className={styles.miratsid}>
-            <p className={styles.id}>Mirats ID</p>
+            <p className={styles.id}> {userData?.WorkDetails?.employeeID}</p>
           </section>
           <section className={styles.sign_in}>
             <section className={styles.sign_in_details}>
-              <p>Rohan Gupta</p>
-              <p>Recruitment Coordinator</p>
+              <p>
+                {userData?.basicinfo?.firstname +
+                  " " +
+                  userData?.basicinfo?.lastname}
+              </p>
+              <p>{userData?.WorkDetails?.position}</p>
             </section>
 
             <Box>
@@ -57,7 +109,10 @@ const Header = () => {
                 >
                   <Avatar>
                     <figure className={styles.portalprofile}>
-                      <img src={portalprofile} alt="profileimg" />
+                      <img
+                        src={profileimage?.url || portalprofile}
+                        alt="profileimg"
+                      />{" "}
                     </figure>
                   </Avatar>
                 </IconButton>
@@ -117,7 +172,7 @@ const Header = () => {
                 </ListItemIcon>
                 Settings
               </MenuItem>
-              <MenuItem>
+              <MenuItem onClick={handleLogout}>
                 <ListItemIcon>
                   <Logout fontSize="small" />
                 </ListItemIcon>

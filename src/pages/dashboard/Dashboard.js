@@ -1,4 +1,3 @@
-import portalprofile from "../../assets/portalprofile.jpeg";
 import styles from "./Dashboard.module.css";
 import idimg from "../../assets/idimg.png";
 import personalInfoImgmodified from "../../assets/personalInfoImgmodified.png";
@@ -6,27 +5,66 @@ import financecard from "../../assets/financecard.png";
 import identitycard from "../../assets/identitycard.png";
 import workdetails from "../../assets/workdetails.png";
 import workpolicycard from "../../assets/workpolicycard.png";
-
 import Header from "../../components/header/Header";
 import ProfileIntro from "../../components/profile_Intro/ProfileIntro";
 import DashboardStats from "../../components/dashboard_stats/DashboardStats";
 import Navigation from "../../components/navigation/Navigation";
 import Footer from "../../components/footer/Footer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { userAuthContext } from "../context/Userauthcontext";
+import portalprofile from "../../assets/default-profile.jpeg";
+import { arrayUnion, doc, setDoc } from "firebase/firestore";
+import { firestoredb } from "../../firebase-config";
 
-const dashboardintro = [
-  {
-    time: "Afternoon",
-    profileName: "Rohan",
-    profiledesc: "Here is what your dashboard looks like today.",
-    profileimg: portalprofile,
-  },
-];
+//getting nowtime and printing greet message
+let Greet = "";
+const nowtime = new Date().getHours();
+// console.log(nowtime);
+if (nowtime >= 5 && nowtime < 12) {
+  Greet = "Morning";
+} else if (nowtime >= 12 && nowtime <= 16) {
+  Greet = "Afternoon";
+} else if (nowtime > 16 && nowtime < 23) {
+  Greet = "Good Evening";
+} else {
+  Greet = "Night";
+}
 
+//getting user's name from email:
 const Dashboard = () => {
+  let { user, logout, userData, profileimage, fingerprint } =
+    useContext(userAuthContext);
+
+  const dashboardintro = [
+    {
+      time: Greet,
+      profileName: userData?.basicinfo?.firstname,
+      profiledesc: "Here is what your dashboard looks like today.",
+      profileimg: profileimage?.url || portalprofile,
+    },
+  ];
+
+  useEffect(() => {
+    setDoc(
+      doc(
+        firestoredb,
+        "miratsinsights",
+        "peoples",
+        "employee",
+        String(user?.uid)
+      ),
+      {
+        fingerprint: arrayUnion(fingerprint),
+      },
+      { merge: true }
+    );
+  }, [user]);
+
   return (
     <div className={styles.dashboard}>
       <Header />
+
       <ProfileIntro profileintrodata={dashboardintro} />
 
       {/* stats cards */}
@@ -39,10 +77,10 @@ const Dashboard = () => {
       <div className={styles.dashboard_cards}>
         <div className={styles.id_details_cards}>
           <section className={styles.left_grid}>
-            <Link to="/userdetails/signin-security">
+            <Link to="/signin-security">
               <section className={styles.idinfo_card}>
                 <h1 className={styles.colordark}>Mirats Insights ID</h1>
-                <p className={styles.email}>rohan.gupta@miratsinsights.com</p>
+                <p className={styles.email}>{user?.email}</p>
                 <section className={styles.links_id}>
                   <section className={styles.links}>
                     <p>Sign-in and Security,</p>
@@ -152,7 +190,6 @@ const Dashboard = () => {
         </div>
       </div>
       {/* footer */}
-
       <Footer />
     </div>
   );

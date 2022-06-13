@@ -1,4 +1,5 @@
 .attendance_container {
+  /* border: 1px solid red; */
   width: 1200px;
   margin: 2em auto;
 }
@@ -48,38 +49,47 @@
   padding: 2em 3.5em;
 }
 
-.login,
-.logout {
+.login button,
+.logout button {
   width: 270px;
-  height: 82px;
   border-radius: 21px;
+  border: none;
   padding: 1em 2em;
   cursor: pointer;
+  text-align: center;
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 25px;
 }
 
-.login {
+.login button {
   background: rgba(189, 255, 204, 0.56);
   margin-bottom: 1em;
 }
 
-.login:hover {
+.login button:hover {
   background: rgba(132, 245, 159, 0.56);
 }
 
-.logout {
+.logout button {
   background: rgba(255, 224, 177, 0.4);
 }
 
-.logout:hover {
+.logout button[disabled] {
+  cursor: not-allowed;
+}
+.login button[disabled] {
+  cursor: not-allowed;
+}
+.logout button[disabled]:hover {
+  background: rgba(255, 224, 177, 0.4);
+}
+.login button[disabled]:hover {
+  background: rgba(189, 255, 204, 0.56);
+}
+.logout button:hover {
   background: rgba(248, 186, 92, 0.4);
   /* transform: translateY(-2px); */
-}
-
-.login p,
-.logout p {
-  text-align: center;
-  font-size: 21px;
-  line-height: 25px;
 }
 
 /* attendance filter */

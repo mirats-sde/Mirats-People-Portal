@@ -28,26 +28,11 @@
   text-align: center;
   margin-top: 0.8em;
   font-size: 24px;
-  word-wrap: break-word;
 }
 
 .profile_desc .gradient {
   color: #bf92b8;
-  /* background-image: linear-gradient(
-    45deg,
-    hsl(296deg 98% 51%) 0%,
-    hsl(294deg 98% 60%) 11%,
-    hsl(293deg 98% 65%) 22%,
-    hsl(291deg 98% 68%) 33%,
-    hsl(289deg 97% 71%) 44%,
-    hsl(288deg 95% 73%) 56%,
-    hsl(286deg 93% 75%) 67%,
-    hsl(285deg 89% 77%) 78%,
-    hsl(283deg 84% 79%) 89%,
-    hsl(282deg 78% 80%) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; */
+  text-transform: capitalize;
 }
 
 .profileImg img {

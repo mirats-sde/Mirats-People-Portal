@@ -3,12 +3,11 @@ import { Link } from "react-router-dom";
 
 // hooks
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-
+import { useContext, useEffect, useState } from "react";
+import { ClientJS } from "clientjs";
 // in project imports
 import styles from "./MainPage.module.css";
-import portalprofile from "../../assets/portalprofile.jpeg";
-// import profileImg from "../../assets/profileImg.png";
+import portalprofile from "../../assets/default-profile.jpeg";
 import emp from "../../assets/emp.png";
 import personalInfoImgmodified from "../../assets/personalInfoImgmodified.png";
 import financial from "../../assets/financial.png";
@@ -23,14 +22,14 @@ import UserPolicyCard from "../../components/userPolicyCard/UserPolicyCard";
 import ProfileIntro from "../../components/profile_Intro/ProfileIntro";
 import Header from "../../components/header/Header";
 import Navigation from "../../components/navigation/Navigation";
-import NameDialog from "../../pages/main_page/components/PersonalDetails/NameDialog";
-import DOB from "../../pages/main_page/components/PersonalDetails/DOB";
-import Gender from "../../pages/main_page/components/PersonalDetails/Gender";
-import Number from "../../pages/main_page/components/PersonalDetails/Number";
-import Email from "../../pages/main_page/components/PersonalDetails/Email";
-import Location from "../../pages/main_page/components/PersonalDetails/Location";
-import Nickname from "../../pages/main_page/components/PersonalDetails/Nickname";
-import ProfilePicture from "../../pages/main_page/components/PersonalDetails/ProfilePicture";
+import NameDialog from "./components/PersonalDetails/NameDialog";
+import DOB from "./components/PersonalDetails/DOB";
+import Gender from "./components/PersonalDetails/Gender";
+import Number from "./components/PersonalDetails/Number";
+import Email from "./components/PersonalDetails/Email";
+import Location from "./components/PersonalDetails/Location";
+import Nickname from "./components/PersonalDetails/Nickname";
+import ProfilePicture from "./components/PersonalDetails/ProfilePicture";
 import BankDetails from "./components/FinancialDetails/BankDetails";
 import UpiDetails from "./components/FinancialDetails/UpiDetails";
 import Address from "./components/IdentityDetails/Address";
@@ -45,15 +44,41 @@ import Manager from "./components/WorkDetails/Manager";
 import DOJ from "./components/WorkDetails/DOJ";
 import Shift from "./components/WorkDetails/ShiftName";
 import WorkLocation from "./components/WorkDetails/WorkLocation";
+import { userAuthContext } from "../context/Userauthcontext";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  onSnapshot,
+  query,
+  QuerySnapshot,
+  setDoc,
+} from "firebase/firestore";
+import { firestoredb, storage } from "../../firebase-config";
+import {
+  deleteObject,
+  getDownloadURL,
+  listAll,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { v4 as uuid } from "uuid";
+// import portalprofile from "../../assets/portalprofile";
 
-const profiledetailsintro = [
-  {
-    time: "Morning",
-    profileName: "Rohan",
-    profiledesc: "Follow Your Passion",
-    profileimg: portalprofile,
-  },
-];
+//getting nowtime and printing greet message
+let Greet = "";
+const nowtime = new Date().getHours();
+// console.log(nowtime);
+if (nowtime >= 5 && nowtime < 12) {
+  Greet = "Morning";
+} else if (nowtime >= 12 && nowtime <= 16) {
+  Greet = "Afternoon";
+} else if (nowtime > 16 && nowtime < 23) {
+  Greet = "Good Evening";
+} else {
+  Greet = "Night";
+}
 
 const personalinfocarddetails = [
   {
@@ -173,9 +198,18 @@ const handleClose = (statechanger) => {
 
 const MainPage = () => {
   const { detailsTypes } = useParams();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [detailsTypes]);
+  const { user, userData, profileimage } = useContext(userAuthContext);
+
+  // console.log(userData);
+  const profiledetailsintro = [
+    {
+      time: Greet,
+
+      profileName: userData?.basicinfo?.firstname,
+      profiledesc: "Follow Your Passion",
+      profileimg: profileimage?.url || portalprofile,
+    },
+  ];
 
   return (
     <>
@@ -191,16 +225,25 @@ const MainPage = () => {
           <section className={styles.profile_left}>
             <section className={styles.profile_left_details}>
               <figure>
-                <img src={emp} alt="profileimg" />
+                <img
+                  src={profileimage?.url || portalprofile}
+                  alt="profileimg"
+                />
               </figure>
-              <h1>Rohan Gupta</h1>
-              <p>rohan.gupta@miratsinsights.com</p>
+              <h1>
+                {userData?.basicinfo?.firstname +
+                  " " +
+                  (userData?.basicinfo?.middlename || " ") +
+                  " " +
+                  userData?.basicinfo?.lastname}
+              </h1>
+              <p>{userData?.basicinfo?.email}</p>
             </section>
             <section className={styles.left_pages}>
               {leftpages.map((pages, index) => {
                 // console.log(detailsTypes === pages?.value);
                 return (
-                  <div className={styles.pages}>
+                  <div className={styles.pages} key={uuid()}>
                     {/* <h4 className={styles.light}>{pages.name}</h4> */}
 
                     <h4>
@@ -251,6 +294,9 @@ const MainPage = () => {
 };
 
 const PersonalInformation = () => {
+  const { userData } = useContext(userAuthContext);
+
+  console.log(userData);
   // name
   const [namedialog, setnamedialog] = useState(false);
 
@@ -275,13 +321,12 @@ const PersonalInformation = () => {
   // profile picture
   const [profilepic, setProfilePic] = useState(false);
 
+  const [changedate, setchangedate] = useState();
+
   return (
     <>
       <div className={styles.profile_info}>
         <CardInfo carddata={personalinfocarddetails} />
-
-        {/* profile details cards */}
-        {/* Dailog Box */}
 
         {/* name dialog box */}
         <NameDialog
@@ -291,7 +336,7 @@ const PersonalInformation = () => {
           handleClickOpen={handleClickOpen}
         />
 
-        {/* date of birth dialog box */}
+        {/* date of birth dialg box */}
         <DOB
           birth={birth}
           setdob={setdob}
@@ -354,49 +399,65 @@ const PersonalInformation = () => {
             className={styles.card_body}
           >
             <h1>Name</h1>
-            <p>Rohan Gupta</p>
+            <p>
+              {userData?.basicinfo?.firstname +
+                " " +
+                (userData?.basicinfo?.middlename || " ") +
+                " " +
+                userData?.basicinfo?.lastname}
+            </p>
           </section>
           <section
             onClick={() => handleClickOpen(setdob)}
             className={styles.card_body}
           >
             <h1>Date of Birth</h1>
-            <p>03 October, 1999</p>
+            <p>
+              {userData?.basicinfo?.dob?.toDate().toLocaleDateString("en-US", {
+                month: "long",
+                day: "2-digit",
+                year: "numeric",
+              })}
+            </p>
+            {/* <p>03 October, 1999</p> */}
           </section>
           <section
             onClick={() => handleClickOpen(setgender)}
             className={styles.card_body}
           >
             <h1>Gender</h1>
-            <p>Male</p>
+            <p>{userData?.basicinfo?.gender}</p>
           </section>
           <section
             onClick={() => handleClickOpen(setphoneno)}
             className={styles.card_body}
           >
             <h1>Phone Number</h1>
-            <p>+91 (890) 989 8998</p>
+            <p>{userData?.basicinfo?.phonenumber}</p>
+            {/* <p>+91 (890) 989 8998</p> */}
           </section>
           <section
             onClick={() => handleClickOpen(setemail)}
             className={styles.card_body}
           >
             <h1>Personal Email</h1>
-            <p>rohang@email.com</p>
+            <p>{userData?.basicinfo?.email}</p>
           </section>
           <section
             onClick={() => handleClickOpen(setLocation)}
             className={styles.card_body}
           >
             <h1>Location</h1>
-            <p>Mumbai, India</p>
+            <p>{userData?.basicinfo?.city},</p>
+            <p>{userData?.basicinfo?.country}</p>
+            {/* <p>Mumbai, India</p> */}
           </section>
           <section
             onClick={() => handleClickOpen(setNickname)}
             className={styles.card_body}
           >
             <h1>Nickname</h1>
-            <p>unspecified</p>
+            <p>{userData?.basicinfo?.nickname}</p>
           </section>
           <section
             onClick={() => handleClickOpen(setProfilePic)}
@@ -412,27 +473,46 @@ const PersonalInformation = () => {
 };
 
 const FinancialDetails = () => {
+  const { userData } = useContext(userAuthContext);
+
   // bank details
   const [bankDetails, setBankDetails] = useState(false);
 
+  //secondary bank details:
+  const [secbankDetails, setSecbankDetails] = useState(false);
+
   // upi details
   const [upiDetails, setUpiDetails] = useState(false);
+
+  //secondary upi details:
+  const [secupiDetails, setsecupiDetails] = useState(false);
 
   return (
     <div>
       <CardInfo carddata={financialcarddetails} />
       <div className={styles.FinancialDetails_btn}>
-        <button onClick={() => handleClickOpen(setBankDetails)}>
-          Add Another Bank
-        </button>
-        <button onClick={() => handleClickOpen(setUpiDetails)}>
-          Add Another UPI
-        </button>
+        {userData?.BankDetails?.[1] ? (
+          <></>
+        ) : (
+          <button onClick={() => handleClickOpen(setSecbankDetails)}>
+            Add Another Bank
+          </button>
+        )}
+
+        {userData?.UpiDetails?.[1] ? (
+          <></>
+        ) : (
+          <button onClick={() => handleClickOpen(setsecupiDetails)}>
+            Add Another UPI
+          </button>
+        )}
       </div>
       <div className={styles.bankDetails_container}>
         {/* dialog box */}
         <BankDetails
           bankDetails={bankDetails}
+          secbankDetails={secbankDetails}
+          setSecbankDetails={setSecbankDetails}
           setBankDetails={setBankDetails}
           handleClickOpen={handleClickOpen}
           handleClose={handleClose}
@@ -440,6 +520,8 @@ const FinancialDetails = () => {
 
         <UpiDetails
           upiDetails={upiDetails}
+          secupiDetails={secupiDetails}
+          setsecupiDetails={setsecupiDetails}
           setUpiDetails={setUpiDetails}
           handleClickOpen={handleClickOpen}
           handleClose={handleClose}
@@ -451,10 +533,16 @@ const FinancialDetails = () => {
             className={styles.details_wrapper}
           >
             <h1>Default Bank</h1>
-            <p>Rohan Gupta</p>
-            <p>ICICI Bank</p>
-            <p>ICIC00000XXXX</p>
-            <p>123456789012</p>
+            <p>
+              {userData?.BankDetails?.[0]?.account_name ? (
+                userData?.BankDetails?.[0]?.account_name
+              ) : (
+                <>Account Name</>
+              )}
+            </p>
+            <p>{userData?.BankDetails?.[0]?.bank_name}</p>
+            <p>{userData?.BankDetails?.[0]?.ifsc_code}</p>
+            <p>{userData?.BankDetails?.[0]?.account_no}</p>
           </section>
           <button onClick={() => handleClickOpen(setBankDetails)}>
             Edit Details
@@ -467,36 +555,82 @@ const FinancialDetails = () => {
             className={styles.details_wrapper}
           >
             <h1>Default UPI</h1>
-            <p>Rohan Gupta</p>
-            <p>Google Pay</p>
-            <p>rohang@oksbi</p>
+            {!userData?.UpiDetails?.[0] ? (
+              <p>Add UPI details</p>
+            ) : (
+              <>
+                <p>{userData?.UpiDetails?.[0]?.account_name}</p>
+                <p>{userData?.UpiDetails?.[0]?.payment_service}</p>
+                <p>{userData?.UpiDetails?.[0]?.upi_ID}</p>
+              </>
+            )}
           </section>
-          <button onClick={() => handleClickOpen(setUpiDetails)}>
-            Edit Details
-          </button>
+          {!userData?.UpiDetails?.[0] ? (
+            <>
+              <button onClick={() => handleClickOpen(setUpiDetails)}>
+                Add Details
+              </button>
+            </>
+          ) : (
+            <>
+              <button onClick={() => handleClickOpen(setUpiDetails)}>
+                Edit Details
+              </button>
+            </>
+          )}
         </div>
 
-        <div className={styles.bank_details}>
-          <section
-            onClick={() => handleClickOpen(setBankDetails)}
-            className={styles.details_wrapper}
-          >
-            <h1>Use Other Bank</h1>
-            <p>Rohan Gupta</p>
-            <p>ICICI Bank</p>
-            <p>ICIC00000XXXX</p>
-            <p>123456789012</p>
-          </section>
-          <button onClick={() => handleClickOpen(setBankDetails)}>
-            Edit Details
-          </button>
-        </div>
+        {userData?.BankDetails?.[1] ? (
+          <div className={styles.bank_details}>
+            <section
+              onClick={() => handleClickOpen(setSecbankDetails)}
+              className={styles.details_wrapper}
+            >
+              <h1>Use Other Bank</h1>
+              <p>
+                {userData?.BankDetails?.[1]?.account_name ? (
+                  userData?.BankDetails?.[1]?.account_name
+                ) : (
+                  <>Account Name</>
+                )}
+              </p>
+              <p>{userData?.BankDetails?.[1]?.bank_name}</p>
+              <p>{userData?.BankDetails?.[1]?.ifsc_code}</p>
+              <p>{userData?.BankDetails?.[1]?.account_no}</p>
+            </section>
+            <button onClick={() => handleClickOpen(setSecbankDetails)}>
+              Edit Details
+            </button>
+          </div>
+        ) : (
+          <></>
+        )}
+
+        {userData?.UpiDetails?.[1] ? (
+          <div className={styles.bank_details}>
+            <section
+              onClick={() => handleClickOpen(setsecupiDetails)}
+              className={styles.details_wrapper}
+            >
+              <h1>Default UPI</h1>
+              <p>{userData?.UpiDetails?.[1]?.account_name}</p>
+              <p>{userData?.UpiDetails?.[1]?.payment_service}</p>
+              <p>{userData?.UpiDetails?.[1]?.upi_ID}</p>
+            </section>
+            <button onClick={() => handleClickOpen(setsecupiDetails)}>
+              Edit Details
+            </button>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
 };
 
 const IdentityDetails = () => {
+  const { userData } = useContext(userAuthContext);
   // address
   const [address, setAddress] = useState(false);
 
@@ -551,14 +685,33 @@ const IdentityDetails = () => {
           >
             <h1>Physical Address</h1>
             <div className={styles.address}>
-              <p>Rohan Gupta</p>
-              <p>C-23, Block C,</p>
-              <p>Sector 7, Dwarka</p>
-              <p>New Delhi, India - 110000</p>
+              {!userData?.IdentificationDetails?.address ? (
+                <p>Add Address</p>
+              ) : (
+                <>
+                  <p>
+                    {userData?.IdentificationDetails?.address?.street_address}
+                  </p>
+                  <p>
+                    {userData?.IdentificationDetails?.address?.state},{" "}
+                    {userData?.IdentificationDetails?.address?.city},{" "}
+                    {userData?.IdentificationDetails?.address?.country} -{" "}
+                    {userData?.IdentificationDetails?.address?.zip_code}
+                  </p>
+                </>
+              )}
             </div>
-            <button onClick={() => handleClickOpen(setAddress)}>
-              Edit Details
-            </button>
+            {!userData?.IdentificationDetails?.address ? (
+              <button onClick={() => handleClickOpen(setAddress)}>
+                Add Details
+              </button>
+            ) : (
+              <>
+                <button onClick={() => handleClickOpen(setAddress)}>
+                  Edit Details
+                </button>
+              </>
+            )}
           </section>
 
           <section
@@ -567,13 +720,40 @@ const IdentityDetails = () => {
           >
             <h1>Driving License</h1>
             <div className={styles.address}>
-              <p>Rohan Gupta</p>
-              <p>03 Oct, 1999</p>
-              <p>XXXXXXXXXXXX</p>
+              {!userData?.IdentificationDetails?.driving_license ? (
+                <p>Add Driving License details</p>
+              ) : (
+                <>
+                  <p>
+                    {userData?.IdentificationDetails?.driving_license?.name}
+                  </p>
+                  <p>
+                    {userData?.IdentificationDetails?.driving_license?.date
+                      ?.toDate()
+                      ?.toLocaleDateString("en-US", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                  </p>
+                  <p>
+                    {userData?.IdentificationDetails?.driving_license?.license_number
+                      ?.toString()
+                      .slice(0, 5) + "XXXXXXXXX"}
+                  </p>
+                  {/* <p>XXXXXXXXXXXX</p> */}
+                </>
+              )}
             </div>
-            <button onClick={() => handleClickOpen(setDrivingLicense)}>
-              Edit Details
-            </button>
+            {!userData?.IdentificationDetails?.driving_license ? (
+              <button onClick={() => handleClickOpen(setDrivingLicense)}>
+                Add Details
+              </button>
+            ) : (
+              <button onClick={() => handleClickOpen(setDrivingLicense)}>
+                Edit Details
+              </button>
+            )}
           </section>
 
           <section
@@ -582,12 +762,43 @@ const IdentityDetails = () => {
           >
             <h1>Aadhar Card</h1>
             <div className={styles.address}>
-              <p>Rohan Gupta</p>
-              <p>03 Oct, 1999</p>
-              <p>S/O Rajesh Gupta</p>
-              <p>1983 8XXX XXXX</p>
+              {!userData?.IdentificationDetails?.aadhar_card ? (
+                <p>Add Aadhar Card Details</p>
+              ) : (
+                <>
+                  <p>
+                    {userData?.IdentificationDetails?.aadhar_card?.aadhar_name}
+                  </p>
+                  <p>
+                    {userData?.IdentificationDetails?.aadhar_card?.date
+                      ?.toDate()
+                      ?.toLocaleDateString("en-US", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                  </p>
+                  <p>
+                    S/O{" "}
+                    {userData?.IdentificationDetails?.aadhar_card?.aadhar_name}
+                  </p>
+                  {/* <p>S/O Rajesh Gupta</p> */}
+                  <p>
+                    {userData?.IdentificationDetails?.aadhar_card?.aadharnumber
+                      .toString()
+                      .slice(0, 5) + "XXXXXXX"}
+                  </p>
+                  {/* <p>1983 8XXX XXXX</p> */}
+                </>
+              )}
             </div>
-            <button>Edit Details</button>
+            {userData?.IdentificationDetails?.aadhar_card ? (
+              <>
+                <button>Edit Details</button>
+              </>
+            ) : (
+              <button>Add Details</button>
+            )}
           </section>
 
           <section
@@ -596,14 +807,48 @@ const IdentityDetails = () => {
           >
             <h1>PAN Card</h1>
             <div className={styles.address}>
-              <p>Rohan Gupta</p>
-              <p>03 Oct, 1999</p>
-              <p>S/O Rajesh Gupta</p>
-              <p>BUZPK31XXX</p>
+              {!userData?.IdentificationDetails?.pan_card ? (
+                <p>Add PAN Card Details</p>
+              ) : (
+                <>
+                  <p>{userData?.IdentificationDetails?.pan_card?.pan_name}</p>
+                  <p>
+                    {userData?.IdentificationDetails?.pan_card?.date
+                      ?.toDate()
+                      ?.toLocaleDateString("en-US", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                  </p>
+                  <p>
+                    S/O {userData?.IdentificationDetails?.pan_card?.pan_name}
+                  </p>
+                  <p>
+                    {userData?.IdentificationDetails?.pan_card?.pan_number
+                      .toString()
+                      .slice(0, 5) + "XXXXXXXXXX"}
+                  </p>
+                  {/* <p>BUZPK31XXX</p> */}
+                </>
+              )}
             </div>
-            <button onClick={() => handleClickOpen(setPanCard)}>
+            {userData?.IdentificationDetails?.pan_card ? (
+              <>
+                <button onClick={() => handleClickOpen(setPanCard)}>
+                  Edit Details
+                </button>
+              </>
+            ) : (
+              <>
+                <button onClick={() => handleClickOpen(setPanCard)}>
+                  Edit Details
+                </button>
+              </>
+            )}
+            {/* <button onClick={() => handleClickOpen(setPanCard)}>
               Edit Details
-            </button>
+            </button> */}
           </section>
         </section>
       </section>
@@ -612,6 +857,7 @@ const IdentityDetails = () => {
 };
 
 const WorkDetails = () => {
+  const { userData } = useContext(userAuthContext);
   // position / job role
   const [position, setPosition] = useState(false);
 
@@ -704,9 +950,9 @@ const WorkDetails = () => {
           className={styles.work_details_cards_body}
         >
           <h1>Position/Job Role</h1>
-          <p>Software Developer Engineer</p>
-          <span>Grade - A</span>
-          <span>141020-1A</span>
+          <p>{userData?.WorkDetails?.position}</p>
+          <span>Grade - </span>
+          <span>{userData?.WorkDetails?.grade}</span>
         </section>
         {/* dept */}
         <section
@@ -714,7 +960,7 @@ const WorkDetails = () => {
           className={styles.work_details_cards_body}
         >
           <h1>Department</h1>
-          <p>Software and Services</p>
+          <p>{userData?.WorkDetails?.department}</p>
         </section>
         {/* team name */}
         <section
@@ -722,7 +968,7 @@ const WorkDetails = () => {
           className={styles.work_details_cards_body}
         >
           <h1>Team Name</h1>
-          <p>Information Technology and Services</p>
+          <p>{userData?.WorkDetails?.teamname}</p>
         </section>
         {/* team leader */}
         <section
@@ -730,9 +976,9 @@ const WorkDetails = () => {
           className={styles.work_details_cards_body}
         >
           <h1>Team Leader</h1>
-          <p>Lokesh Warren Naidu</p>
-          <p>Senior Software Developer Engineer</p>
-          <p>lokesh.naidu@miratsinsights.com</p>
+          <p>{userData?.WorkDetails?.TeamLeaderInfo?.teamleader_name}</p>
+          <p>{userData?.WorkDetails?.TeamLeaderInfo?.teamleader_position}</p>
+          <p>{userData?.WorkDetails?.TeamLeaderInfo?.teamleader_email}</p>
         </section>
         {/* manager */}
         <section
@@ -740,27 +986,39 @@ const WorkDetails = () => {
           className={styles.work_details_cards_body}
         >
           <h1>Manager</h1>
-          <p>Ayyan Ali</p>
-          <p>Head of Global Sales</p>
-          <p>ayaan.ali@miratsinsights.com</p>
+          <p>{userData?.WorkDetails?.TeamManagerInfo?.teammanager_name}</p>
+          <p>{userData?.WorkDetails?.TeamManagerInfo?.teammanager_position}</p>
+          <p>{userData?.WorkDetails?.TeamManagerInfo?.teammanager_email}</p>
         </section>
         {/* doj */}
         <section
-          onClick={() => handleClickOpen(setDoj)}
+          onClick={
+            () => <></>
+            // handleClickOpen(setDoj)
+          }
           className={styles.work_details_cards_body}
         >
           <h1>Date of Joining</h1>
-          <p>Dec 6</p>
-          <p>Year - 2021</p>
+          <p>
+            {userData?.WorkDetails?.doj?.toDate()?.toLocaleDateString("en-US", {
+              month: "short",
+              day: "2-digit",
+            })}
+          </p>
+          <p>
+            Year -{" "}
+            {userData?.WorkDetails?.doj?.toDate()?.toLocaleDateString("en-US", {
+              year: "numeric",
+            })}
+          </p>
         </section>
         {/* shift time */}
         <section
           onClick={() => handleClickOpen(setShift)}
           className={styles.work_details_cards_body}
         >
-          <h1>Shift Name</h1>
-          <p>Day Shift</p>
-          <p>10 AM - 7 PM</p>
+          <h1>Shift</h1>
+          <p>{userData?.WorkDetails?.shift?.shift_name}</p>
         </section>
         {/* work location */}
         <section
@@ -768,8 +1026,8 @@ const WorkDetails = () => {
           className={styles.work_details_cards_body}
         >
           <h1>Work Location</h1>
-          <p>Mumbai</p>
-          <p>India</p>
+          <p>{userData?.WorkDetails?.city}</p>
+          <p>{userData?.WorkDetails?.country}</p>
         </section>
       </div>
     </div>
@@ -777,13 +1035,68 @@ const WorkDetails = () => {
 };
 
 const SignInSecurity = () => {
+  const { userData, user } = useContext(userAuthContext);
+  const [DOJ, setDOJ] = useState();
+  const [loginDevices, setLoginDevices] = useState(0);
+
+  //Getting all users DOJ:
+  async function GetDOJ() {
+    const q = query(
+      collection(firestoredb, "miratsinsights", "peoples", "employee")
+    );
+    onSnapshot(q, (querySnapshot) => {
+      // console.log("heree");
+      setDOJ([]);
+      querySnapshot.forEach((doc) => {
+        setDOJ((prear) => [
+          ...prear,
+          {
+            date: doc.data()?.WorkDetails?.doj,
+          },
+        ]);
+      });
+    });
+  }
+
+  //getting logged in devices:
+  async function LoginDevices() {
+    const docref = doc(
+      firestoredb,
+      "miratsinsights",
+      "peoples",
+      "employee",
+      String(user?.uid)
+    );
+    const docsnap = await getDoc(docref);
+    if (docsnap.exists()) {
+      console.log(docsnap.data().fingerprint);
+      setLoginDevices(docsnap.data().fingerprint.length);
+    }
+  }
+
+  useEffect(() => {
+    GetDOJ();
+    LoginDevices();
+  }, [userData]);
+
+  // console.log(loginDevices);
+
   return (
     <div className={styles.signin_security}>
       <CardInfo carddata={signinsecuritycarddetails} />
       <div className={styles.signinsecutity_cards}>
         <section className={styles.signinsecutity_card_body}>
           <h1>Password</h1>
-          <p>Last updated 15 March, 2022</p>
+          <p>
+            Last updated{" "}
+            {new Date(
+              user?.reloadUserInfo?.passwordUpdatedAt
+            )?.toLocaleDateString("en-CA", {
+              month: "short",
+              year: "numeric",
+              day: "2-digit",
+            })}
+          </p>
         </section>
         <section className={styles.signinsecutity_card_body}>
           <h1>Account Security</h1>
@@ -795,11 +1108,12 @@ const SignInSecurity = () => {
         </section>
         <section className={styles.signinsecutity_card_body}>
           <h1>Employee ID</h1>
-          <p>141020-1A</p>
+          <p>{userData?.WorkDetails?.employeeID}</p>
+          {/* <p>141020-1A</p> */}
         </section>
         <section className={styles.signinsecutity_card_body}>
           <h1>Account Login History</h1>
-          <p>2 devices used</p>
+          <p>{loginDevices} devices used</p>
         </section>
       </div>
     </div>
@@ -816,6 +1130,172 @@ const Policies = () => {
 };
 
 const Documentation = () => {
+  const { user, panImage, aadharImage } = useContext(userAuthContext);
+  const [aadharCardFile, setAadharCardFile] = useState();
+  const [panCardFile, setPanCardFile] = useState();
+  const { userData } = useContext(userAuthContext);
+
+  //aadhar_card reference:
+  const Aadhar_ref = ref(
+    storage,
+    `peoples-portal/miratsinsights/users/${user?.uid}/Documents/Aadhar_card`
+  );
+
+  //uploading aadhar_card:
+  const uploadAadharCard = async (aadharCardFile) => {
+    console.log("uploading aadhar card");
+    if (!aadharCardFile) {
+      console.log("aadhar_card file not found");
+      return;
+    } else {
+      console.log("aadhar card file found");
+      let filename = aadharCardFile.name;
+      const fileref = ref(
+        storage,
+        `peoples-portal/miratsinsights/users/${user?.uid}/Documents/Aadhar_card/${filename}`
+      );
+      const uploadtask = uploadBytesResumable(fileref, aadharCardFile);
+      uploadtask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(progress);
+        },
+        (er) => {
+          console.log(er.message);
+        },
+        () => {
+          console.log("aadhar card uploaded");
+          getDownloadURL(uploadtask.snapshot.ref).then((url) => {
+            console.log(url);
+            setDoc(
+              doc(
+                firestoredb,
+                "miratsinsights",
+                "peoples",
+                "employee",
+                String(user?.uid)
+              ),
+              {
+                Documents: {
+                  ...userData?.Documents,
+                  AadharFile: url,
+                },
+              },
+              { merge: true }
+            );
+            console.log("saved to database");
+          });
+        }
+      );
+    }
+  };
+
+  //deleting aadhar_card if it exists and then uploading new:
+  const DeleteAadharCard = (Aadhar_ref) => {
+    console.log("deleting aadhar_card");
+    listAll(Aadhar_ref).then((res) => {
+      res.items.forEach((itemref) => {
+        deleteObject(itemref)
+          .then(() => {
+            console.log("aadhar card deleted successfully");
+          })
+          .catch((er) => {
+            console.log(er.message);
+          });
+      });
+    });
+  };
+
+  //uploading aadhar card:
+  async function uploadAadharCardFile(e) {
+    e.preventDefault();
+    DeleteAadharCard(Aadhar_ref);
+    uploadAadharCard(aadharCardFile);
+  }
+
+  //pan_card reference:
+  const PanCard_ref = ref(
+    storage,
+    `peoples-portal/miratsinsights/users/${user?.uid}/Documents/Pan_card`
+  );
+
+  //uploading pan_card:
+  const uploadPanCard = async (panCardFile) => {
+    console.log("uploading pan card");
+    if (!panCardFile) {
+      console.log("pan card file not found");
+      return;
+    } else {
+      console.log("pan card file found");
+      let filename = panCardFile.name;
+      const fileref = ref(
+        storage,
+        `peoples-portal/miratsinsights/users/${user?.uid}/Documents/Pan_card/${filename}`
+      );
+      const uploadtask = uploadBytesResumable(fileref, panCardFile);
+      uploadtask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(progress);
+        },
+        (er) => {
+          console.log(er.message);
+        },
+        () => {
+          console.log("pan card uploaded");
+          getDownloadURL(uploadtask.snapshot.ref).then((url) => {
+            console.log(url);
+            setDoc(
+              doc(
+                firestoredb,
+                "miratsinsights",
+                "peoples",
+                "employee",
+                String(user?.uid)
+              ),
+              {
+                Documents: {
+                  ...userData?.Documents,
+                  PanFile: url,
+                },
+              },
+              { merge: true }
+            );
+            console.log("saved to database");
+          });
+        }
+      );
+    }
+  };
+
+  //deleting pan card:
+  const DeletePanCard = (PanCard_ref) => {
+    console.log("deleting pan card");
+    listAll(PanCard_ref).then((res) => {
+      res.items.forEach((itemref) => {
+        deleteObject(itemref)
+          .then(() => {
+            console.log("pan card deleted successfully");
+          })
+          .catch((er) => {
+            console.log(er.message);
+          });
+      });
+    });
+  };
+
+  console.log(panImage);
+  //uploading pan card:
+  async function uploadPanCardFile(e) {
+    e.preventDefault();
+    DeletePanCard(PanCard_ref);
+    uploadPanCard(panCardFile);
+  }
+
   return (
     <div className={styles.documentation}>
       <CardInfo carddata={documentationcarddetails} />
@@ -853,12 +1333,73 @@ const Documentation = () => {
             </a>
           </p>
         </section>
+        <section className={styles.documentation_card_body}>
+          <h1>Aadhar Card</h1>
+          {aadharImage == undefined ? (
+            <></>
+          ) : (
+            <>
+              <a href={aadharImage?.url}>View Aadhar Card</a>
+            </>
+          )}
+
+          <p>
+            <input
+              type="file"
+              onChange={(e) => {
+                setAadharCardFile(e.target.files[0]);
+              }}
+            />
+          </p>
+          {!aadharCardFile ? (
+            <></>
+          ) : (
+            <>
+              <p>
+                <button onClick={uploadAadharCardFile}>Upload</button>
+              </p>
+            </>
+          )}
+        </section>
+        <section className={styles.documentation_card_body}>
+          <h1>Pan Card</h1>
+          {panImage == undefined ? (
+            <></>
+          ) : (
+            <>
+              <a href={panImage?.url}>View Pancard</a>
+            </>
+          )}
+          <p>
+            <input
+              type="file"
+              name=""
+              onChange={(e) => {
+                setPanCardFile(e.target.files[0]);
+              }}
+              id=""
+            />
+          </p>
+          {!panCardFile ? (
+            <></>
+          ) : (
+            <>
+              <p>
+                <button onClick={uploadPanCardFile}>Upload</button>
+              </p>
+            </>
+          )}
+
+          {/* {/ <p>View ID Card</p> /} */}
+          {/* <p>
+            <a className={styles.underline} href="link">
+              confirmed
+            </a>
+          </p> */}
+        </section>
       </div>
     </div>
   );
 };
 
 export default MainPage;
-
-// figma link for this project
-// https://www.figma.com/file/rVdFZcOK7f9tfMO4l99cWH/Mirats-Peoples-Portal-(Copy)?node-id=0%3A1

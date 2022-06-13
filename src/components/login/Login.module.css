@@ -17,15 +17,12 @@
   /* border: 1px solid blue; */
   padding: 4em 2em;
   /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+  border-radius: 15px;
 }
 
 .form_img {
   text-align: center;
-  margin-bottom: 3em;
-}
-
-.form_img img {
-  width: 300px;
+  margin-bottom: 1em;
 }
 
 .login_img img {
@@ -34,11 +31,6 @@
   object-fit: cover;
   /* height: 400px; */
 }
-
-/* .login_img .reset_password {
-  width: 800px;
-  height: 550px;
-} */
 
 .animate_label {
   position: relative;
@@ -78,7 +70,7 @@
 
 .wrapper {
   width: 350px;
-  /* height: 400px; */
+  height: 400px;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
   position: fixed;
   top: 50%;
@@ -125,7 +117,7 @@
   text-align: center;
   font-size: 20px;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.26);
-  margin-top: 3em;
+  margin-top: 40px;
   cursor: pointer;
 }
 

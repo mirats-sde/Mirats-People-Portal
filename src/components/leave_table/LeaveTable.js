@@ -2,10 +2,11 @@ import styles from "./LeaveTable.module.css";
 import { BiEdit } from "react-icons/bi";
 import { styled } from "@mui/system";
 import TablePaginationUnstyled from "@mui/base/TablePaginationUnstyled";
-
+import { v4 as uuid } from "uuid";
 import { useState } from "react";
 
 import LeaveForm from "../../pages/leave/LeaveForm";
+import { useLeaveContext } from "../../pages/leave/LeaveContext";
 
 function createData(leavetype, leavefrom, leaveto, noofdays, reason, status) {
   return { leavetype, leavefrom, leaveto, noofdays, reason, status };
@@ -161,12 +162,10 @@ const CustomTablePagination = styled(TablePaginationUnstyled)`
   }
 `;
 
-const LeaveTable = () => {
-  const [openLeaveForm, setOpenLeaveForm] = useState(false);
-  const handleLeaveFormOpen = () => setOpenLeaveForm(true);
-  const handleCloseLeaveForm = () => setOpenLeaveForm(false);
-
+const LeaveTable = ({ leaves }) => {
+  const { leaveForm, setLeaveForm } = useLeaveContext();
   const [page, setPage] = useState(0);
+  const [leaveForUpdate, setLeaveForUpdate] = useState({});
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -183,44 +182,59 @@ const LeaveTable = () => {
   };
 
   return (
-    <div className={styles.table}>
-      <Root sx={{ maxWidth: "100%" }}>
-        <table aria-label="custom pagination table" cellSpacing={15}>
-          <thead>
-            <tr>
-              <th>Leave Type</th>
-              <th>From</th>
-              <th>To</th>
-              <th>No. Of Days</th>
-              <th>Reason</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(rowsPerPage > 0
-              ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : rows
-            ).map((row, i) => {
-              return (
-                <>
-                  <tr key={row.i}>
-                    <td>{row.leavetype}</td>
-                    <td>{row.leavefrom}</td>
-                    <td>{row.leaveto}</td>
-                    <td>{row.noofdays}</td>
-                    <td>{row.reason}</td>
-                    <td>{row.status}</td>
+    <>
+      <div className={styles.table}>
+        <Root sx={{ maxWidth: "100%" }}>
+          <table aria-label="custom pagination table" cellSpacing={15}>
+            <thead>
+              <tr>
+                <th>Leave Type</th>
+                <th>From</th>
+                <th>To</th>
+                <th>No. Of Days</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(rowsPerPage > 0
+                ? leaves.slice(
+                    page * rowsPerPage,
+                    page * rowsPerPage + rowsPerPage
+                  )
+                : leaves
+              ).map((row, i) => {
+                return (
+                  <tr key={uuid()}>
+                    <td>{row?.leave_type}</td>
                     <td>
-                      <LeaveForm
-                        openLeaveForm={openLeaveForm}
-                        setOpenLeaveForm={setOpenLeaveForm}
-                        handleCloseLeaveForm={handleCloseLeaveForm}
-                        handleLeaveFormOpen={handleLeaveFormOpen}
-                        id={"something"}
-                      />
+                      {row?.from_date?.toDate()?.toLocaleDateString("en-CA", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </td>
+                    <td>
+                      {row?.to_date?.toDate()?.toLocaleDateString("en-CA", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </td>
+                    <td>{row?.number_of_days}</td>
+                    <td>{row?.reason}</td>
+                    <td>{row?.status}</td>
+                    <td>
                       <a
-                        onClick={handleLeaveFormOpen}
+                        onClick={() => {
+                          setLeaveForm({
+                            open: true,
+                            formType: "update",
+                            data: row,
+                          });
+                          setLeaveForUpdate(row);
+                        }}
                         style={{ cursor: "pointer" }}
                         href={row.billno}
                       >
@@ -228,41 +242,41 @@ const LeaveTable = () => {
                       </a>
                     </td>
                   </tr>
-                </>
-              );
-            })}
+                );
+              })}
 
-            {/* {emptyRows > 0 && (
+              {/* {emptyRows > 0 && (
               <tr style={{ height: 41 * emptyRows }}>
                 <td colSpan={3} />
               </tr>
             )} */}
-          </tbody>
-          <tfoot>
-            <tr>
-              <CustomTablePagination
-                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                // colSpan={3}
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                componentsProps={{
-                  select: {
-                    "aria-label": "rows per page",
-                  },
-                  actions: {
-                    showFirstButton: true,
-                    showLastButton: true,
-                  },
-                }}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
-            </tr>
-          </tfoot>
-        </table>
-      </Root>
-    </div>
+            </tbody>
+            <tfoot>
+              <tr>
+                <CustomTablePagination
+                  rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                  // colSpan={3}
+                  count={rows.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  componentsProps={{
+                    select: {
+                      "aria-label": "rows per page",
+                    },
+                    actions: {
+                      showFirstButton: true,
+                      showLastButton: true,
+                    },
+                  }}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </tr>
+            </tfoot>
+          </table>
+        </Root>
+      </div>
+    </>
   );
 };
 

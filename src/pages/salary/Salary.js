@@ -1,20 +1,37 @@
 import styles from "./Salary.module.css";
-import portalprofile from "../../assets/portalprofile.jpeg";
+import portalprofile from "../../assets/default-profile.jpeg";
 import Header from "../../components/header/Header";
 import ProfileIntro from "../../components/profile_Intro/ProfileIntro";
 import DashboardStats from "../../components/dashboard_stats/DashboardStats";
 import Navigation from "../../components/navigation/Navigation";
+import { useContext } from "react";
+import { userAuthContext } from "../context/Userauthcontext";
 
-const salaryintro = [
-  {
-    time: "Afternoon",
-    profileName: "Rohan",
-    profiledesc: "Here is what your dashboard looks like today.",
-    profileimg: portalprofile,
-  },
-];
+//getting nowtime and printing greet message
+let Greet = "";
+const nowtime = new Date().getHours();
+// console.log(nowtime);
+if (nowtime >= 5 && nowtime < 12) {
+  Greet = "Morning";
+} else if (nowtime >= 12 && nowtime <= 16) {
+  Greet = "Afternoon";
+} else if (nowtime > 16 && nowtime < 23) {
+  Greet = "Good Evening";
+} else {
+  Greet = "Night";
+}
 
 const Salary = () => {
+  const { userData, user, profileimage } = useContext(userAuthContext);
+
+  const salaryintro = [
+    {
+      time: Greet,
+      profileName: userData?.basicinfo?.firstname,
+      profiledesc: "Here is what your dashboard looks like today.",
+      profileimg: profileimage?.url || portalprofile,
+    },
+  ];
   return (
     <div className={styles.salary}>
       <Header />

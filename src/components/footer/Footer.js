@@ -1,5 +1,5 @@
 import styles from "./footer.module.css";
-
+import { v4 as uuid } from "uuid";
 const footerLinksData = [
   {
     linkTitle: "Privacy Policy",
@@ -30,7 +30,7 @@ const Footer = () => {
         <div className={styles.footer_linkContainer}>
           {footerLinksData.map((item) => {
             return (
-              <a href={item.linkUrl}>
+              <a href={item.linkUrl} key={uuid()}>
                 {" "}
                 {item.linkTitle} <span>|</span>{" "}
               </a>

@@ -1,0 +1,152 @@
+/* Forms */
+.container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  margin: 0 8rem;
+}
+
+.container .form_heading {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.2rem;
+  color: black;
+  border-bottom: 3px solid gray;
+  padding-bottom: 0.5rem;
+  font-family: "Poppins", sans-serif;
+}
+
+.form {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid gray;
+  padding: 1rem 0 3rem 0;
+  width: 100%;
+}
+
+.form_left {
+  width: 30%;
+}
+
+.form_left h2 {
+  font-size: 1.7rem;
+}
+
+.form_left p {
+  font-weight: 500;
+}
+
+.form_right {
+  width: 35%;
+  margin-right: 5rem;
+}
+
+.group {
+  margin-bottom: 1rem;
+  font-family: "Poppins", sans-serif;
+}
+
+.group h4 {
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+  color: gray;
+}
+
+.group__control {
+  width: 100%;
+  padding: 0.6rem;
+  border: 2px solid gray;
+  outline: none;
+  border-radius: 0.6rem;
+  background: white;
+  font-weight: 500;
+  letter-spacing: 1px;
+  font-family: "Poppins", sans-serif;
+}
+
+.group__radio {
+  margin-right: 3rem;
+}
+
+.group__radio label {
+  margin-left: 0.5rem;
+}
+
+input[type="radio"]:after {
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+  top: -2px;
+  left: -1px;
+  position: relative;
+  background-color: #d1d3d1;
+  content: "";
+  display: inline-block;
+  visibility: visible;
+  border: 2px solid white;
+  cursor: pointer;
+}
+
+input[type="radio"]:checked:after {
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+  top: -2px;
+  left: -1px;
+  position: relative;
+  background-color: #0247fe;
+  content: "";
+  display: inline-block;
+  visibility: visible;
+  border: 2px solid white;
+  cursor: pointer;
+  border: 1px solid gray;
+}
+
+input[type="checkbox"]:after {
+  width: 15px;
+  height: 15px;
+  border-radius: 5px;
+  top: -2px;
+  left: -1px;
+  position: relative;
+  background-color: #d1d3d1;
+  content: "";
+  display: inline-block;
+  visibility: visible;
+  border: 2px solid white;
+  cursor: pointer;
+  border: 1px solid gray;
+}
+
+input[type="checkbox"]:checked:after {
+  width: 15px;
+  height: 15px;
+  border-radius: 5px;
+  top: -2px;
+  left: -1px;
+  position: relative;
+  background-color: #0247fe;
+  content: "";
+  display: inline-block;
+  visibility: visible;
+  border: 2px solid white;
+  cursor: pointer;
+}
+
+.form_btn {
+  float: right;
+  margin-top: 3rem;
+  margin-bottom: 5rem;
+  border: none;
+  outline: none;
+  background-color: #0247fe;
+  padding: 0.5rem 3.5rem;
+  font-family: "Poppins", sans-serif;
+  color: white;
+  border-radius: 1.5rem;
+  letter-spacing: 1px;
+  font-weight: 500;
+  cursor: pointer;
+}

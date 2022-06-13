@@ -5,14 +5,54 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 // import styles from "../../../../utils/Dialog.css"
 import styles from "../../MainPage.module.css";
+import { useContext, useEffect, useState } from "react";
+import { doc, documentId, getDoc, query, setDoc } from "firebase/firestore";
+import { firestoredb } from "../../../../firebase-config";
+import { userAuthContext } from "../../../context/Userauthcontext";
+import Snackbar from "@mui/material/Snackbar";
 
 const Number = ({ phoneno, setphoneno, handleClose, handleClickOpen }) => {
+  const { user, userData, setUserData, handleFormSubmit } =
+    useContext(userAuthContext);
+  const [PhoneNoInfo, setPhoneNoInfo] = useState();
+  const { open, setOpen, Alert, snackbarClose } = useContext(userAuthContext);
+
+  useEffect(() => {
+    setPhoneNoInfo(userData?.basicinfo?.phonenumber);
+  }, [userData]);
+
+  const handleSave = async (e) => {
+    e.preventDefault();
+    await setDoc(
+      doc(
+        firestoredb,
+        "miratsinsights",
+        "peoples",
+        "employee",
+        String(user?.uid)
+      ),
+      {
+        basicinfo: { ...userData?.basicinfo, phonenumber: PhoneNoInfo },
+      },
+      { merge: true }
+    );
+    setOpen({
+      open: true,
+      severity: "success",
+      msg: "Phone Number Updated Successfully !",
+    });
+    console.log("phone number changed successfully!");
+    handleClose(setphoneno);
+  };
+
+  console.log(PhoneNoInfo);
   return (
     <Dialog
       sx={{ borderRadius: "25" }}
       open={phoneno}
       onClose={() => handleClose(setphoneno)}
     >
+      {" "}
       <form>
         <div className={styles.dialogform}>
           <DialogTitle>
@@ -29,6 +69,11 @@ const Number = ({ phoneno, setphoneno, handleClose, handleClickOpen }) => {
                 label="Phone Number"
                 fullWidth
                 variant="outlined"
+                value={PhoneNoInfo}
+                onChange={(e) => {
+                  setPhoneNoInfo(e.target.value);
+                }}
+
                 // inputProps={{ sx: { color: "#fff" } }}
               />
             </div>
@@ -39,11 +84,16 @@ const Number = ({ phoneno, setphoneno, handleClose, handleClickOpen }) => {
       <div className={styles.form_btns}>
         <button
           className={styles.cancel}
-          onClick={() => handleClose(setphoneno)}
+          onClick={() => {
+            handleClose(setphoneno);
+            setPhoneNoInfo(userData?.basicinfo?.phonenumber);
+          }}
         >
           Cancel
         </button>
-        <button className={styles.save}>Save</button>
+        <button className={styles.save} onClick={handleSave}>
+          Save
+        </button>
       </div>
     </Dialog>
   );

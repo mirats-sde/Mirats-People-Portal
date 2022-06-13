@@ -1,28 +1,27 @@
 import styles from "./Table.module.css";
-
 import { styled } from "@mui/system";
 import TablePaginationUnstyled from "@mui/base/TablePaginationUnstyled";
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { userAuthContext } from "../../pages/context/Userauthcontext";
 
 function createData(date, punchin, punchout, production, overtime) {
   return { date, punchin, punchout, production, overtime };
 }
 
-const rows = [
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-  createData("Feb 18, 2022", "10:03 am", "7:00 pm", "8 hrs 57 mins", "NA"),
-];
+const rows = [];
+export function msToTime(duration) {
+  var milliseconds = parseInt((duration % 1000) / 100),
+    seconds = Math.floor((duration / 1000) % 60),
+    minutes = Math.floor((duration / (1000 * 60)) % 60),
+    hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+  hours = hours < 10 ? "0" + hours : hours;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  seconds = seconds < 10 ? "0" + seconds : seconds;
+
+  return hours + ":" + minutes + ":" + seconds;
+}
 
 const Root = styled("div")`
   table {
@@ -116,13 +115,14 @@ const CustomTablePagination = styled(TablePaginationUnstyled)`
   }
 `;
 
-const Table = () => {
+const Table = ({ AttendanceData, setAttendanceData }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const { userData, user } = useContext(userAuthContext);
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  // const emptyRows =
-  //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -148,33 +148,35 @@ const Table = () => {
           </thead>
           <tbody>
             {(rowsPerPage > 0
-              ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : rows
-            ).map((row) => (
+              ? AttendanceData.slice(
+                  page * rowsPerPage,
+                  page * rowsPerPage + rowsPerPage
+                )
+              : AttendanceData
+            ).map((row, index) => (
               <>
-                {/* <div className={styles.gap}> */}
-                <tr key={row.date}>
-                  <td>{row.date}</td>
-                  <td>{row.punchin}</td>
-                  <td>{row.punchout}</td>
-                  <td>{row.production}</td>
-                  <td>{row.overtime}</td>
+                <tr key={index}>
+                  <td>{row?.Date}</td>
+                  <td>{row?.PunchIn?.toDate()?.toLocaleTimeString("en-CA")}</td>
+                  <td>
+                    {!row?.PunchOut
+                      ? "-"
+                      : row?.PunchOut?.toDate()?.toLocaleTimeString("en-CA")}
+                  </td>
+                  <td>
+                    {row?.PunchOut ? <>{row?.production}</> : <>{"00:00:00"}</>}
+                  </td>
+                  <td>
+                    {row?.PunchOut ? <>{row?.overtime}</> : <>{"00:00:00"}</>}
+                  </td>
                 </tr>
-                {/* </div> */}
               </>
             ))}
-
-            {/* {emptyRows > 0 && (
-              <tr style={{ height: 41 * emptyRows }}>
-                <td colSpan={3} />
-              </tr>
-            )} */}
           </tbody>
           <tfoot>
             <tr>
               <CustomTablePagination
                 rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                // colSpan={3}
                 count={rows.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
